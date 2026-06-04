@@ -4,18 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MANGIA BENE</title>
-
-<!-- ICONE STANDARD E MOBILI (ANDROID / APPLE) -->
 <link rel="icon" type="image/png" href="icona.png">
 <link rel="shortcut icon" type="image/png" href="icona.png">
 <link rel="apple-touch-icon" href="icona.png">
-
-<!-- CONFIGURAZIONE PER VISUALIZZAZIONE FULLSCREEN SMARTPHONE -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Mangia Bene">
 <meta name="mobile-web-app-capable" content="yes">
-
 <style>
   body { font-family: 'Segoe UI', sans-serif; background-color: #f8fafc; color: #334155; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
   header { padding: 16px; text-align: center; font-weight: bold; font-size: 18px; color: #059669; background: white; border-bottom: 1px solid #f1f5f9; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
@@ -25,11 +20,8 @@
   .schermata-app.attiva { display: block; }
   .card-bianca { background-color: white; border: 1px solid #e2e8f0; padding: 18px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: stretch; }
   .titolo-sezione { margin-top: 0; margin-bottom: 14px; color: #059669; font-size: 16px; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
-  
-  /* Stile speciale per il pulsante verde di installazione */
   #box-installazione { display: none; background-color: #f0fdf4; border: 2px dashed #22c55e; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px; }
   .btn-installa-app { background-color: #22c55e; color: white; border: none; padding: 12px 24px; border-radius: 25px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); width: 100%; box-sizing: border-box; }
-  
   .widget-idratazione { background-color: #e0f2fe; border: 1px solid #bae6fd; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px; }
   .btn-acqua-pill { background-color: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 4px; }
   .btn-acqua-grigio { background-color: #64748b; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 4px; }
@@ -43,20 +35,16 @@
   .cibo-kcal { color: #be123c; font-weight: bold; font-size: 14px; }
   .btn-elimina-cibo { background-color: #ffe4e6; color: #b91c1c; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; }
   .cibo-sotto { font-size: 12px; color: #64748b; margin-top: 2px; }
-  .input-nota-cibo { width: 100%; padding: 6px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; margin-top: 6px; box-sizing: border-box; }
   .input-gruppo { margin-bottom: 12px; width: 100%; box-sizing: border-box; }
   .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
   .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
   .riga-input-macro { display: flex; gap: 6px; }
   .btn-primario { background-color: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
   .btn-rosso { background-color: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
-  .btn-scan { background-color: #0284c7; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; }
+  .btn-scan { background-color: #0284c7; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 12px; text-align: center; }
   .galleria-foto { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
   .foto-wrapper { position: relative; aspect-ratio: 1; }
   .foto-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
-  .foto-canc { position: absolute; top: 2px; right: 2px; background: rgba(239,68,68,0.9); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .foto-orario { position: absolute; bottom: 2px; left: 2px; background: rgba(0,0,0,0.6); color: white; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
-  .box-consigli { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px; font-size: 13px; line-height: 1.5; color: #166534; }
   .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); z-index: 9999; }
   .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 11px; cursor: pointer; font-weight: 500; }
   .nav-item.attivo { color: #059669; font-weight: 700; }
@@ -64,14 +52,10 @@
 </style>
 </head>
 <body>
-
 <header id="titolo-header">MANGIA BENE</header>
-
 <main>
-    <!-- DIARIO -->
+    <!-- SCHERMATA DIARIO -->
     <div id="schermata-diario" class="schermata-app attiva">
-      
-      <!-- BOX PULSANTE VERDE DI INSTALLAZIONE APP -->
       <div id="box-installazione">
         <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #166534;">🌟 Installa Mangia Bene sul tuo telefono!</div>
         <button class="btn-installa-app" id="btn-installa-pwa">Aggiungi a Schermata Home</button>
@@ -85,41 +69,50 @@
           <button class="btn-acqua-grigio" onclick="azzeraAcqua()">Azzera</button>
         </div>
       </div>
-
       <div class="card-bianca">
         <h3 class="titolo-sezione">Riepilogo Nutrizionale</h3>
-        <div class="macro-gruppo">
-          <div class="macro-info"><span>Calorie</span><span id="testo-kcal">0 / 2000 kcal</span></div>
-          <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background-color: #ef4444;"></div></div>
-        </div>
-        <div class="macro-gruppo">
-          <div class="macro-info"><span>Carboidrati</span><span id="testo-carbo">0 / 250g</span></div>
-          <div class="barra-sfondo"><div id="barra-carbo" class="barra-avanzamento" style="background-color: #3b82f6;"></div></div>
-        </div>
-        <div class="macro-gruppo">
-          <div class="macro-info"><span>Proteine</span><span id="testo-prot">0 / 120g</span></div>
-          <div class="barra-sfondo"><div id="barra-prot" class="barra-avanzamento" style="background-color: #10b981;"></div></div>
-        </div>
-        <div class="macro-gruppo">
-          <div class="macro-info"><span>Grassi</span><span id="testo-grassi">0 / 65g</span></div>
-          <div class="barra-sfondo"><div id="barra-grassi" class="barra-avanzamento" style="background-color: #f59e0b;"></div></div>
-        </div>
+        <div class="macro-gruppo"><div class="macro-info"><span>Calorie</span><span id="testo-kcal">0 / 2000 kcal</span></div><div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background-color: #ef4444;"></div></div></div>
+        <div class="macro-gruppo"><div class="macro-info"><span>Carboidrati</span><span id="testo-carbo">0 / 250g</span></div><div class="barra-sfondo"><div id="barra-carbo" class="barra-avanzamento" style="background-color: #3b82f6;"></div></div></div>
+        <div class="macro-gruppo"><div class="macro-info"><span>Proteine</span><span id="testo-prot">0 / 120g</span></div><div class="barra-sfondo"><div id="barra-prot" class="barra-avanzamento" style="background-color: #10b981;"></div></div></div>
+        <div class="macro-gruppo"><div class="macro-info"><span>Grassi</span><span id="testo-grassi">0 / 65g</span></div><div class="barra-sfondo"><div id="barra-grassi" class="barra-avanzamento" style="background-color: #f59e0b;"></div></div></div>
       </div>
-
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Alimenti Consumati</h3>
-        <div id="lista-alimenti-inseriti"></div>
-      </div>
+      <div class="card-bianca"><h3 class="titolo-sezione">Alimenti Consumati</h3><div id="lista-alimenti-inseriti"></div></div>
     </div>
 
-    <!-- AGGIUNGI -->
+    <!-- SCHERMATA AGGIUNGI CIBO -->
     <div id="schermata-aggiungi" class="schermata-app">
       <div class="card-bianca">
         <h3 class="titolo-sezione">Nuovo Alimento</h3>
-        <div class="input-gruppo">
-          <label>Nome Alimento / Pasto</label>
-          <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta al pomodoro">
+        <div class="input-gruppo"><label>Nome Alimento / Pasto</label><input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta al pomodoro"></div>
+        <div class="riga-input-macro">
+          <div class="input-gruppo"><label>Kcal</label><input type="number" id="input-cibo-kcal" class="input-field" placeholder="0"></div>
+          <div class="input-gruppo"><label>Carbo (g)</label><input type="number" id="input-cibo-carbo" class="input-field" placeholder="0"></div>
         </div>
+        <div class="riga-input-macro">
+          <div class="input-gruppo"><label>Prot (g)</label><input type="number" id="input-cibo-prot" class="input-field" placeholder="0"></div>
+          <div class="input-gruppo"><label>Grassi (g)</label><input type="number" id="input-cibo-grassi" class="input-field" placeholder="0"></div>
+        </div>
+        <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva nel Diario</button>
+      </div>
+    </div>
+
+    <!-- SCHERMATA FOTO / SCAN -->
+    <div id="schermata-scan" class="schermata-app">
+      <div class="card-bianca">
+        <h3 class="titolo-sezione">Scatta o Carica Foto</h3>
+        <button class="btn-scan" onclick="document.getElementById('input-file-foto').click()">📸 Fai una Foto al Pasto</button>
+        <input type="file" id="input-file-foto" accept="image/*" capture="environment" style="display:none" onchange="gestisciNuovaFoto(event)">
+        <div class="galleria-foto" id="contenitore-galleria"></div>
+      </div>
+    </div>
+
+    <!-- SCHERMATA PROFILO -->
+    <div id="schermata-profilo" class="schermata-app">
+      <div class="card-bianca">
+        <h3 class="titolo-sezione">Il Tuo Profilo</h3>
+        <div class="input-gruppo"><label>Obiettivo Calorie Giornaliere</label><input type="number" id="profilo-target-kcal" class="input-field" value="2000"></div>
+        <button class="btn-primario" onclick="salvaImpostazioniProfilo()" style="margin-bottom:10px">Aggiorna Obiettivi</button>
+        <button class="btn-rosso" onclick="azzeraTuttiIDati()">Azzera Tutti i Dati di Oggi</button>
       </div>
     </div>
 </main>
@@ -133,9 +126,27 @@
     <div class="nav-icona">➕</div>
     <div>Aggiungi</div>
   </div>
+  <div class="nav-item" onclick="cambiaSchermata('scan')">
+    <div class="nav-icona">📸</div>
+    <div>Scan</div>
+  </div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo')">
+    <div class="nav-icona">👤</div>
+    <div>Profilo</div>
+  </div>
 </div>
 
 <script>
+  let datiApp = {
+    acqua: 0,
+    alimenti: [],
+    targetKcal: 2000,
+    targetCarbo: 250,
+    targetProt: 120,
+    targetGrassi: 65,
+    foto: []
+  };
+
   function cambiaSchermata(nomeSchermata) {
     document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
@@ -143,14 +154,138 @@
     event.currentTarget.classList.add('attivo');
   }
 
-  let acqua = 0;
   function aggiungiAcqua(qta) {
-    acqua += qta;
-    document.getElementById('valore-acqua').innerText = acqua;
+    datiApp.acqua += qta;
+    aggiornaGrafica();
   }
+
   function azzeraAcqua() {
-    acqua = 0;
-    document.getElementById('valore-acqua').innerText = acqua;
+    datiApp.acqua = 0;
+    aggiornaGrafica();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value || "Alimento generico";
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    const carbo = parseInt(document.getElementById('input-cibo-carbo').value) || 0;
+    const prot = parseInt(document.getElementById('input-cibo-prot').value) || 0;
+    const grassi = parseInt(document.getElementById('input-cibo-grassi').value) || 0;
+
+    datiApp.alimenti.push({ id: Date.now(), nome, kcal, carbo, prot, grassi });
+    
+    document.getElementById('input-cibo-nome').value = '';
+    document.getElementById('input-cibo-kcal').value = '';
+    document.getElementById('input-cibo-carbo').value = '';
+    document.getElementById('input-cibo-prot').value = '';
+    document.getElementById('input-cibo-grassi').value = '';
+
+    cambiaSchermata('diario');
+    // Forziamo il ripristino del focus visivo sull'icona diario
+    document.querySelectorAll('.nav-item')[0].classList.add('attivo');
+    aggiornaGrafica();
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(a => a.id !== id);
+    aggiornaGrafica();
+  }
+
+  function salvaImpostazioniProfilo() {
+    const nuovoTarget = parseInt(document.getElementById('profilo-target-kcal').value) || 2000;
+    datiApp.targetKcal = nuovoTarget;
+    // Ricalcolo proporzionale automatico dei macro basato sulle nuove calorie
+    datiApp.targetCarbo = Math.round((nuovoTarget * 0.5) / 4);
+    datiApp.targetProt = Math.round((nuovoTarget * 0.24) / 4);
+    datiApp.targetGrassi = Math.round((nuovoTarget * 0.29) / 9);
+    
+    alert("Obiettivi aggiornati con successo!");
+    cambiaSchermata('diario');
+    document.querySelectorAll('.nav-item')[0].classList.add('attivo');
+    aggiornaGrafica();
+  }
+
+  function azzeraTuttiIDati() {
+    if(confirm("Vuoi davvero azzerare il diario di oggi?")) {
+      datiApp.acqua = 0;
+      datiApp.alimenti = [];
+      datiApp.foto = [];
+      aggiornaGrafica();
+      alert("Dati azzerati!");
+      cambiaSchermata('diario');
+      document.querySelectorAll('.nav-item')[0].classList.add('attivo');
+    }
+  }
+
+  function gestisciNuovaFoto(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+        datiApp.foto.push({ id: Date.now(), src: e.target.result, orario: ora });
+        aggiornaGrafica();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function eliminaFoto(id) {
+    datiApp.foto = datiApp.foto.filter(f => f.id !== id);
+    aggiornaGrafica();
+  }
+
+  function aggiornaGrafica() {
+    document.getElementById('valore-acqua').innerText = datiApp.acqua;
+
+    let totKcal = 0, totCarbo = 0, totProt = 0, totGrassi = 0;
+    datiApp.alimenti.forEach(a => {
+      totKcal += a.kcal;
+      totCarbo += a.carbo;
+      totProt += a.prot;
+      totGrassi += a.grassi;
+    });
+
+    document.getElementById('testo-kcal').innerText = totKcal + " / " + datiApp.targetKcal + " kcal";
+    document.getElementById('testo-carbo').innerText = totCarbo + " / " + datiApp.targetCarbo + "g";
+    document.getElementById('testo-prot').innerText = totProt + " / " + datiApp.targetProt + "g";
+    document.getElementById('testo-grassi').innerText = totGrassi + " / " + datiApp.targetGrassi + "g";
+
+    let pKcal = Math.min((totKcal / datiApp.targetKcal) * 100, 100);
+    let pCarbo = Math.min((totCarbo / datiApp.targetCarbo) * 100, 100);
+    let pProt = Math.min((totProt / datiApp.targetProt) * 100, 100);
+    let pGrassi = Math.min((totGrassi / datiApp.targetGrassi) * 100, 100);
+
+    document.getElementById('barra-kcal').style.width = pKcal + "%";
+    document.getElementById('barra-carbo').style.width = pCarbo + "%";
+    document.getElementById('barra-prot').style.width = pProt + "%";
+    document.getElementById('barra-grassi').style.width = pGrassi + "%";
+
+    const listaHtml = document.getElementById('lista-alimenti-inseriti');
+    listaHtml.innerHTML = '';
+    datiApp.alimenti.forEach(a => {
+      listaHtml.innerHTML += `
+        <div class="cibo-item">
+          <div class="cibo-riga-sup">
+            <span class="cibo-nome">${a.nome}</span>
+            <span class="cibo-kcal">${a.kcal} kcal</span>
+          </div>
+          <div class="cibo-sotto">Carbo: ${a.carbo}g | Prot: ${a.prot}g | Grassi: ${a.grassi}g</div>
+          <div style="margin-top:6px; text-align:right;">
+            <button class="btn-elimina-cibo" onclick="eliminaAlimento(${a.id})">Elimina</button>
+          </div>
+        </div>`;
+    });
+
+    const galleriaHtml = document.getElementById('contenitore-galleria');
+    galleriaHtml.innerHTML = '';
+    datiApp.foto.forEach(f => {
+      galleriaHtml.innerHTML += `
+        <div class="foto-wrapper">
+          <img src="${f.src}" class="foto-img">
+          <button class="foto-canc" onclick="eliminaFoto(${f.id})">✕</button>
+          <div class="foto-orario">${f.orario}</div>
+        </div>`;
+    });
   }
 
   let deferredPrompt;
@@ -177,6 +312,5 @@
     deferredPrompt = null;
   });
 </script>
-
 </body>
 </html>
