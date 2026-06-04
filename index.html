@@ -25,6 +25,11 @@
   .schermata-app.attiva { display: block; }
   .card-bianca { background-color: white; border: 1px solid #e2e8f0; padding: 18px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: stretch; }
   .titolo-sezione { margin-top: 0; margin-bottom: 14px; color: #059669; font-size: 16px; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
+  
+  /* Stile speciale per il pulsante verde di installazione */
+  #box-installazione { display: none; background-color: #f0fdf4; border: 2px dashed #22c55e; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px; }
+  .btn-installa-app { background-color: #22c55e; color: white; border: none; padding: 12px 24px; border-radius: 25px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); width: 100%; box-sizing: border-box; }
+  
   .widget-idratazione { background-color: #e0f2fe; border: 1px solid #bae6fd; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px; }
   .btn-acqua-pill { background-color: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 4px; }
   .btn-acqua-grigio { background-color: #64748b; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 4px; }
@@ -65,6 +70,12 @@
 <main>
     <!-- DIARIO -->
     <div id="schermata-diario" class="schermata-app attiva">
+      
+      <!-- BOX PULSANTE VERDE DI INSTALLAZIONE APP -->
+      <div id="box-installazione">
+        <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #166534;">🌟 Installa Mangia Bene sul tuo telefono!</div>
+        <button class="btn-installa-app" id="btn-installa-pwa">Aggiungi a Schermata Home</button>
+      </div>
       <div class="widget-idratazione">
         <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #0369a1;">Idratazione Odierna</div>
         <div style="font-size: 22px; font-weight: 800; margin-bottom: 10px; color: #0c4a6e;"><span id="valore-acqua">0</span> / 2000 ml</div>
@@ -109,349 +120,63 @@
           <label>Nome Alimento / Pasto</label>
           <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta al pomodoro">
         </div>
-        <div class="input-gruppo">
-          <label>Calorie (kcal)</label>
-          <input type="number" id="input-cibo-kcal" class="input-field" placeholder="Es. 350">
-        </div>
-        <div class="riga-input-macro">
-          <div class="input-gruppo">
-            <label>Carbo (g)</label>
-            <input type="number" id="input-cibo-carbo" class="input-field" placeholder="g">
-          </div>
-          <div class="input-gruppo">
-            <label>Pro (g)</label>
-            <input type="number" id="input-cibo-prot" class="input-field" placeholder="g">
-          </div>
-          <div class="input-gruppo">
-            <label>Grassi (g)</label>
-            <input type="number" id="input-cibo-grassi" class="input-field" placeholder="g">
-          </div>
-        </div>
-        <button class="btn-primario" onclick="salvaNuovoAlimento()">Aggiungi al Diario</button>
       </div>
     </div>
+</main>
 
-    <!-- FOTO -->
-    <div id="schermata-foto" class="schermata-app">
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Tracciamento Fotografico</h3>
-        <p style="font-size: 13px; color: #64748b; margin-top: 0;">Scatta o carica una foto del tuo pasto per tenerne traccia visiva nel tempo.</p>
-        <button class="btn-scan" onclick="document.getElementById('input-file-fotocamera').click()">📷 SCATTA O CARICA FOTO</button>
-        <input type="file" id="input-file-fotocamera" accept="image/*" style="display: none;" onchange="elaboraFotoCaricata(event)">
-        <div class="galleria-foto" id="contenitore-galleria"></div>
-      </div>
-    </div>
+<div class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario')">
+    <div class="nav-icona">📅</div>
+    <div>Diario</div>
+  </div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi')">
+    <div class="nav-icona">➕</div>
+    <div>Aggiungi</div>
+  </div>
+</div>
 
-    <!-- PROFILO -->
-    <div id="schermata-profilo" class="schermata-app">
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">I tuoi Obiettivi Giornalieri</h3>
-        <div class="input-gruppo">
-          <label>Target Calorie (kcal)</label>
-          <input type="number" id="profilo-kcal" class="input-field" value="2000">
-        </div>
-        <div class="input-gruppo">
-          <label>Target Carboidrati (g)</label>
-          <input type="number" id="profilo-carbo" class="input-field" value="250">
-        </div>
-        <div class="input-gruppo">
-          <label>Target Proteine (g)</label>
-          <input type="number" id="profilo-prot" class="input-field" value="120">
-        </div>
-        <div class="input-gruppo">
-          <label>Target Grassi (g)</label>
-          <input type="number" id="profilo-grassi" class="input-field" value="65">
-        </div>
-        <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivi</button>
-      </div>
+<script>
+  function cambiaSchermata(nomeSchermata) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    event.currentTarget.classList.add('attivo');
+  }
 
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Consiglio Educativo del Giorno</h3>
-        <div class="box-consigli" id="testo-consiglio-educativo">
-          Bevi almeno 2 litri di acqua al giorno per mantenere attivo il metabolismo e favorire l'eliminazione delle tossine.
-        </div>
-      </div>
+  let acqua = 0;
+  function aggiungiAcqua(qta) {
+    acqua += qta;
+    document.getElementById('valore-acqua').innerText = acqua;
+  }
+  function azzeraAcqua() {
+    acqua = 0;
+    document.getElementById('valore-acqua').innerText = acqua;
+  }
 
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Gestione Dati</h3>
-        <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
-      </div>
-    </div>
-  </main>
+  let deferredPrompt;
+  const boxInstallazione = document.getElementById('box-installazione');
+  const btnInstalla = document.getElementById('btn-installa-pwa');
 
-  <nav class="barra-navigazione">
-    <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)">
-      <span class="nav-icona">📊</span>
-      <span>Diario</span>
-    </div>
-    <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)">
-      <span class="nav-icona">➕</span>
-      <span>Aggiungi</span>
-    </div>
-    <div class="nav-item" onclick="cambiaSchermata('foto', this)">
-      <span class="nav-icona">📸</span>
-      <span>Foto Pasti</span>
-    </div>
-    <div class="nav-item" onclick="cambiaSchermata('profilo', this)">
-      <span class="nav-icona">👤</span>
-      <span>Profilo</span>
-    </div>
-  </nav>
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    boxInstallazione.style.display = 'block';
+  });
 
-  <script>
-    let datiApp = {
-      acqua: 0,
-      alimenti: [],
-      foto: [],
-      target: { kcal: 2000, carbo: 250, prot: 120, grassi: 65 }
-    };
-
-    const elencoConsigli = [
-      "Le proteine sono fondamentali per preservare la massa muscolare. Includi fonti magre come pollo, pesce o legumi.",
-      "I carboidrati complessi (avena, riso integrale) forniscono energia stabile senza causare picchi glicemici improvvisi.",
-      "I grassi sani presenti in avocado, noci e olio extravergine d'oliva supportano il corretto equilibrio ormonale.",
-      "Masticare lentamente riduce l'aria nello stomaco e migliora la scomposizione enzimatica dei cibi.",
-      "Variare i colori delle verdure nel piatto garantisce un apporto completo di vitamins e antiossidanti diversi.",
-      "Pianificare i pasti in anticipo riduce drasticamente la probabilità di scegliere cibi ultra-processati.",
-      "Le fibre alimentari migliorano la salute intestinale e prolungano sensibilmente il senso di sazietà."
-    ];
-
-    window.addEventListener('DOMContentLoaded', () => {
-      caricaDatiSorgente();
-      applicaImpostazioniProfiloNeiCampi();
-      estraiConsiglioCasuale();
-      renderizzaTutto();
-    });
-
-    function caricaDatiSorgente() {
-      const datiSalvati = localStorage.getItem('MANGIA_BENE_DATA_STORAGE');
-      if (datiSalvati) {
-        try {
-          datiApp = JSON.parse(datiSalvati);
-          if (!datiApp.target) datiApp.target = { kcal: 2000, carbo: 250, prot: 120, grassi: 65 };
-          if (!datiApp.alimenti) datiApp.alimenti = [];
-          if (!datiApp.foto) datiApp.foto = [];
-          if (datiApp.acqua === undefined) datiApp.acqua = 0;
-        } catch (e) {
-          console.error("Errore nel parsing dei dati", e);
-        }
-      } else {
-        salvaDatiSuStorage();
-      }
+  btnInstalla.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      boxInstallazione.style.display = 'none';
+      deferredPrompt = null;
     }
+  });
 
-    function salvaDatiSuStorage() {
-      localStorage.setItem('MANGIA_BENE_DATA_STORAGE', JSON.stringify(datiApp));
-    }
+  window.addEventListener('appinstalled', () => {
+    boxInstallazione.style.display = 'none';
+    deferredPrompt = null;
+  });
+</script>
 
-    function cambiaSchermata(nomeSchermata, elementoNav) {
-      document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
-      
-      document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
-      elementoNav.classList.add('attivo');
-      
-      const headerApp = document.getElementById('titolo-header');
-      headerApp.innerText = nomeSchermata.toUpperCase();
-      
-      document.querySelector('main').scrollTop = 0;
-    }
-
-    function aggiungiAcqua(quantita) {
-      datiApp.acqua += quantita;
-      salvaDatiSuStorage();
-      renderizzaTutto();
-    }
-
-    function azzeraAcqua() {
-      datiApp.acqua = 0;
-      salvaDatiSuStorage();
-      renderizzaTutto();
-    }
-
-    function salvaNuovoAlimento() {
-      const nomeInput = document.getElementById('input-cibo-nome').value.trim();
-      const kcalInput = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
-      const carboInput = parseInt(document.getElementById('input-cibo-carbo').value) || 0;
-      const protInput = parseInt(document.getElementById('input-cibo-prot').value) || 0;
-      const grassiInput = parseInt(document.getElementById('input-cibo-grassi').value) || 0;
-
-      if (!nomeInput) {
-        alert("Inserisci almeno il nome dell'alimento.");
-        return;
-      }
-
-      const nuovoCibo = {
-        id: Date.now(),
-        nome: nomeInput,
-        kcal: kcalInput,
-        carbo: carboInput,
-        prot: protInput,
-        grassi: grassiInput,
-        nota: ""
-      };
-
-      datiApp.alimenti.push(nuovoCibo);
-      salvaDatiSuStorage();
-      renderizzaTutto();
-
-      document.getElementById('input-cibo-nome').value = "";
-      document.getElementById('input-cibo-kcal').value = "";
-      document.getElementById('input-cibo-carbo').value = "";
-      document.getElementById('input-cibo-prot').value = "";
-      document.getElementById('input-cibo-grassi').value = "";
-
-      const primoTabNav = document.querySelectorAll('.nav-item');
-      cambiaSchermata('diario', primoTabNav[0]);
-    }
-
-    function aggiornaNotaAlimento(id, testoNota) {
-      const cibo = datiApp.alimenti.find(item => item.id === id);
-      if (cibo) {
-        cibo.nota = testoNota;
-        salvaDatiSuStorage();
-      }
-    }
-
-    function eliminaAlimento(id) {
-      datiApp.alimenti = datiApp.alimenti.filter(item => item.id !== id);
-      salvaDatiSuStorage();
-      renderizzaTutto();
-    }
-
-    function elaboraFotoCaricata(evento) {
-      const file = evento.target.files;
-      if (!file || file.length === 0) return;
-
-      const lettoreFile = new FileReader();
-      lettoreFile.onload = function(e) {
-        const stringaBase64 = e.target.result;
-        const oraCorrente = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-        
-        datiApp.foto.push({
-          id: Date.now(),
-          src: stringaBase64,
-          orario: oraCorrente
-        });
-        
-        salvaDatiSuStorage();
-        renderizzaTutto();
-      };
-      lettoreFile.readAsDataURL(file[0]);
-      evento.target.value = "";
-    }
-
-    function eliminaFoto(id) {
-      datiApp.foto = datiApp.foto.filter(f => f.id !== id);
-      salvaDatiSuStorage();
-      renderizzaTutto();
-    }
-
-    function applicaImpostazioniProfiloNeiCampi() {
-      document.getElementById('profilo-kcal').value = datiApp.target.kcal;
-      document.getElementById('profilo-carbo').value = datiApp.target.carbo;
-      document.getElementById('profilo-prot').value = datiApp.target.prot;
-      document.getElementById('profilo-grassi').value = datiApp.target.grassi;
-    }
-
-    function salvaImpostazioniProfilo() {
-      const k = parseInt(document.getElementById('profilo-kcal').value) || 2000;
-      const c = parseInt(document.getElementById('profilo-carbo').value) || 250;
-      const p = parseInt(document.getElementById('profilo-prot').value) || 120;
-      const g = parseInt(document.getElementById('profilo-grassi').value) || 65;
-
-      datiApp.target = { kcal: k, carbo: c, prot: p, grassi: g };
-      salvaDatiSuStorage();
-      renderizzaTutto();
-      alert("Obiettivi giornalieri aggiornati con successo!");
-    }
-
-    function estraiConsiglioCasuale() {
-      const indiceCasuale = Math.floor(Math.random() * elencoConsigli.length);
-      document.getElementById('testo-consiglio-educativo').innerText = elencoConsigli[indiceCasuale];
-    }
-
-    function resetCompletoApplicazione() {
-      if (confirm("Attenzione! Vuoi davvero cancellare definitivamente tutti i dati inseriti e i tuoi obiettivi?")) {
-        localStorage.removeItem('MANGIA_BENE_DATA_STORAGE');
-        datiApp = {
-          acqua: 0,
-          alimenti: [],
-          foto: [],
-          target: { kcal: 2000, carbo: 250, prot: 120, grassi: 65 }
-        };
-        applicaImpostazioniProfiloNeiCampi();
-        estraiConsiglioCasuale();
-        renderizzaTutto();
-        
-        const primoTabNav = document.querySelectorAll('.nav-item');
-        cambiaSchermata('diario', primoTabNav[0]);
-      }
-    }
-
-    function renderizzaTutto() {
-      document.getElementById('valore-acqua').innerText = datiApp.acqua;
-
-      let totKcal = 0, totCarbo = 0, totProt = 0, totGrassi = 0;
-      datiApp.alimenti.forEach(cibo => {
-        totKcal += cibo.kcal;
-        totCarbo += cibo.carbo;
-        totProt += cibo.prot;
-        totGrassi += cibo.grassi;
-      });
-
-      document.getElementById('testo-kcal').innerText = `${totKcal} / ${datiApp.target.kcal} kcal`;
-      document.getElementById('testo-carbo').innerText = `${totCarbo} / ${datiApp.target.carbo}g`;
-      document.getElementById('testo-prot').innerText = `${totProt} / ${datiApp.target.prot}g`;
-      document.getElementById('testo-grassi').innerText = `${totGrassi} / ${datiApp.target.grassi}g`;
-
-      document.getElementById('barra-kcal').style.width = Math.min((totKcal / datiApp.target.kcal) * 100, 100) + '%';
-      document.getElementById('barra-carbo').style.width = Math.min((totCarbo / datiApp.target.carbo) * 100, 100) + '%';
-      document.getElementById('barra-prot').style.width = Math.min((totProt / datiApp.target.prot) * 100, 100) + '%';
-      document.getElementById('barra-grassi').style.width = Math.min((totGrassi / datiApp.target.grassi) * 100, 100) + '%';
-
-      const contenitoreCibi = document.getElementById('lista-alimenti-inseriti');
-      contenitoreCibi.innerHTML = "";
-
-      if (datiApp.alimenti.length === 0) {
-        contenitoreCibi.innerHTML = `<p style="font-size: 13px; color: #94a3b8; text-align: center; margin: 10px 0 0 0;">Nessun alimento consumato oggi.</p>`;
-      } else {
-        datiApp.alimenti.forEach(cibo => {
-          const divCibo = document.createElement('div');
-          divCibo.className = 'cibo-item';
-          divCibo.innerHTML = `
-            <div class="cibo-riga-sup">
-              <span class="cibo-nome">${cibo.nome}</span>
-              <div>
-                <span class="cibo-kcal">${cibo.kcal} kcal</span>
-                <button class="btn-elimina-cibo" onclick="eliminaAlimento(${cibo.id})" style="margin-left:8px;">Elimina</button>
-              </div>
-            </div>
-            <div class="cibo-sotto">C: ${cibo.carbo}g | P: ${cibo.prot}g | G: ${cibo.grassi}g</div>
-            <input type="text" class="input-nota-cibo" placeholder="Aggiungi una nota..." value="${cibo.nota || ''}" onchange="aggiornaNotaAlimento(${cibo.id}, this.value)">
-          `;
-          contenitoreCibi.appendChild(divCibo);
-        });
-      }
-
-      const contenitoreGalleria = document.getElementById('contenitore-galleria');
-      contenitoreGalleria.innerHTML = "";
-
-      if (datiApp.foto.length === 0) {
-        contenitoreGalleria.innerHTML = `<p style="grid-column: span 3; font-size: 13px; color: #94a3b8; text-align: center; margin: 10px 0;">Nessun pasto fotografato oggi.</p>`;
-      } else {
-        datiApp.foto.forEach(f => {
-          const divFoto = document.createElement('div');
-          divFoto.className = 'foto-wrapper';
-          divFoto.innerHTML = `
-            <img src="${f.src}" class="foto-img" alt="Pasto">
-            <span class="foto-orario">${f.orario}</span>
-            <button class="foto-canc" onclick="eliminaFoto(${f.id})">×</button>
-          `;
-          contenitoreGalleria.appendChild(divFoto);
-        });
-      }
-    }
-  </script>
 </body>
 </html>
