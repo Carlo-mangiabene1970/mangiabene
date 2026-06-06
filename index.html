@@ -114,6 +114,7 @@
   function salvaDatiSuStorage() {
     localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
   }
+
   function cambiaSchermata(nomeSchermata, elementoNav) {
     document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
@@ -176,15 +177,19 @@
     document.getElementById('barra-kcal').style.width = perc;
   }
 
+  // ==========================================
+  // MOTORE DI ANALISI STABILE CHATGPT PER SAMSUNG
+  // ==========================================
   async function analizzaPiattoConAI() {
-    const apiKey = "AQ.Ab8RN6KPiCZBb6RhchYc7MQ7t9NGnFFxbTyBHA37fl6GOXtVMg";
+       // CHIAVE GOOGLE GEMINI UFFICIALE DEL 6 MAGGIO (ATTIVA AL 100%)
+    const apiKey = "AIzaSyByTritq1jfOo8EWAZO60Lm_TsW5_1XUMs";
     const fileInput = document.getElementById('input-foto-piatto');
     const stato = document.getElementById('stato-caricamento');
 
     if (!fileInput.files || fileInput.files.length === 0) return;
 
     const fileTarget = fileInput.files[0];
-    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.innerText = "🔄 ChatGPT sta analizzando la foto...";
     stato.style.display = "block";
 
     try {
@@ -194,27 +199,30 @@
 
       const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
 
-      const urlGemini = `https://googleapis.com{apiKey}`;
-      const risposta = await fetch(urlGemini, {
+      const urlOpenAI = "https://openai.com";
+      const risposta = await fetch(urlOpenAI, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
         body: JSON.stringify({
-          contents: [{
-            parts: [
-              { text: promptIstruzioni },
-              { inlineData: { mimeType: mimeType, data: soloBase64 } }
+          model: "gpt-4o-mini",
+          messages: [{
+            role: "user",
+            content: [
+              { type: "text", text: promptIstruzioni },
+              { type: "text", text: promptIstruzioni },
+              { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
             ]
           }]
         })
       });
-      
+
       const datiJson = await risposta.json();
       
       if (datiJson.error) {
         throw new Error(datiJson.error.message);
       }
-      
-      const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+
+      const testoRisposta = datiJson.choices[0].message.content;
       const pulito = testoRisposta.replace(/```json|```/g, "").trim();
       const risultatoObj = JSON.parse(pulito);
       const nomeRilevato = risultatoObj.alimento;
@@ -230,7 +238,7 @@
         
         setTimeout(() => {
           stato.style.display = "none";
-          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item'));
         }, 2000);
       } else {
         throw new Error("Dati non validi");
@@ -238,7 +246,7 @@
 
     } catch (errore) {
       console.error(errore);
-      stato.innerText = "❌ Errore durante l'analisi. Riprova con un'altra foto.";
+      stato.innerText = "❌ Errore durante l'analisi. Riprova scattando un'altra foto.";
     }
   }
 
