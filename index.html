@@ -46,20 +46,18 @@
   </div>
 
   <!-- SCHERMATA AGGIUNGI (CON SCANNER AI INTEGRATO) -->
+    <!-- SCHERMATA AGGIUNGI (CON SCANNER AI AUTOMATICO) -->
   <div id="schermata-aggiungi" class="schermata-app">
     <div class="card-bianca" style="border: 2px dashed #059669; background: #f0fdf4;">
       <h3 class="titolo-sezione">📸 Scannerizza Piatto con AI</h3>
-      <div class="input-gruppo">
-        <label>Inserisci la tua API Key (Gemini o OpenAI)</label>
-        <input type="password" id="input-api-key" class="input-field" placeholder="Incolla qui la tua chiave segreta">
-      </div>
-      <div class="input-gruppo">
-        <label>Seleziona l'AI che stai usando</label>
+      
+      <!-- LA CASELLA DELLA CHIAVE È STATA RIMOSSA PERCHÈ ORA È AUTOMATICA -->
+      <div class="input-gruppo" style="display: none;">
         <select id="selettore-ai" class="input-field">
           <option value="gemini">Google Gemini (Consigliato)</option>
-          <option value="openai">ChatGPT (OpenAI)</option>
         </select>
       </div>
+      
       <div class="input-gruppo">
         <label>Scatta o carica la foto del piatto</label>
         <input type="file" id="input-foto-piatto" accept="image/*" capture="environment" class="input-field">
@@ -73,7 +71,6 @@
       <div class="input-gruppo">
         <label>Nome Alimento</label>
         <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
-
       </div>
       <div class="input-gruppo">
         <label>Calorie (kcal)</label>
@@ -82,6 +79,8 @@
       <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
     </div>
   </div>
+
+  <!-- SCHERMATA PROFILO -->
   <div id="schermata-profilo" class="schermata-app">
     <div class="card-bianca">
       <h3 class="titolo-sezione">Obiettivo Calorico</h3>
@@ -95,6 +94,7 @@
       <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
     </div>
   </div>
+
 </main>
 <nav class="barra-navigazione">
   <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
@@ -189,86 +189,57 @@
     document.getElementById('barra-kcal').style.width = perc;
   }
 
-      // ==========================================
+    // ==========================================
   // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
   // ==========================================
-      async function analizzaPiattoConAI() {
-    const apiKey = document.getElementById('input-api-key').value.trim();
-    const aiScelta = document.getElementById('selettore-ai').value;
+    // ==========================================
+  // FUNZIONE SCANNER AI AUTOMATICA (CORRETTA)
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = "AQ.Ab8RN6KPiCZBb6RhchYc7MQ7t9NGnFFxbTyBHA37fl6GOXtVMg";
     const fileInput = document.getElementById('input-foto-piatto');
     const stato = document.getElementById('stato-caricamento');
 
-    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
     if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
 
-    // PRENDIAMO IL FILE IMMAGINE DALL'INDICE GENERATO CORRETTO
+    // CORREZIONE: Prendiamo il primo file singolo all'indice 0
     const fileTarget = fileInput.files[0];
     stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
     stato.style.display = "block";
 
     try {
       const base64Data = await altoparlanteConvertiBase64(fileTarget);
-      
-      // FUNZIONE CRITICA: Estraiamo solo i dati puri dopo la virgola (indice 1)
+      // Estraiamo solo i dati Base64 puliti dopo la virgola
       const soloBase64 = base64Data.split(',')[1];
       const mimeType = fileTarget.type;
 
-      let nomeRilevato = "";
-      let calorieRilevate = 0;
-
       const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
 
-      if (aiScelta === 'gemini') {
-        const urlGemini = `https://googleapis.com{apiKey}`;
-        const risposta = await fetch(urlGemini, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [
-                { text: promptIstruzioni },
-                { inlineData: { mimeType: mimeType, data: soloBase64 } }
-              ]
-            }]
-          })
-        });
-        
-        const datiJson = await risposta.json();
-        
-        if (datiJson.error) {
-          throw new Error(datiJson.error.message);
-        }
-        
-        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
-        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
-        const risultatoObj = JSON.parse(pulito);
-        nomeRilevato = risultatoObj.alimento;
-        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
-
-      } else if (aiScelta === 'openai') {
-        const urlOpenAI = "https://openai.com";
-        const risposta = await fetch(urlOpenAI, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [{
-              role: "user",
-              content: [
-                { type: "text", text: promptIstruzioni },
-                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
-              ]
-            }]
-          })
-        });
-
-        const datiJson = await risposta.json();
-        const testoRisposta = datiJson.choices[0].message.content;
-        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
-        const risultatoObj = JSON.parse(pulito);
-        nomeRilevato = risultatoObj.alimento;
-        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      const urlGemini = `https://googleapis.com{apiKey}`;
+      const risposta = await fetch(urlGemini, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: promptIstruzioni },
+              { inlineData: { mimeType: mimeType, data: soloBase64 } }
+            ]
+          }]
+        })
+      });
+      
+      const datiJson = await risposta.json();
+      
+      if (datiJson.error) {
+        throw new Error(datiJson.error.message);
       }
+      
+      const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+      const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+      const risultatoObj = JSON.parse(pulito);
+      const nomeRilevato = risultatoObj.alimento;
+      const calorieRilevate = parseInt(risultatoObj.calorie) || 0;
 
       if (nomeRilevato) {
         datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
@@ -288,7 +259,7 @@
 
     } catch (errore) {
       console.error(errore);
-      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+      stato.innerText = "❌ Errore durante l'analisi. Riprova con un'altra foto.";
     }
   }
 
