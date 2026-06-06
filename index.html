@@ -2,315 +2,2519 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>MANGIA BENE</title>
-<link rel="icon" type="image/png" href="icona.png">
-<link rel="shortcut icon" type="image/png" href="icona.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon.png"
-<link rel="apple-touch-icon" href="icon.png">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Mangia Bene">
-<meta name="mobile-web-app-capable" content="yes">
 <style>
-  body { font-family: 'Segoe UI', sans-serif; background-color: #f8fafc; color: #334155; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-  header { padding: 16px; text-align: center; font-weight: bold; font-size: 18px; color: #059669; background: white; border-bottom: 1px solid #f1f5f9; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 90px; scrollbar-width: none; }
-  main::-webkit-scrollbar { display: none; }
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
   .schermata-app { display: none; }
   .schermata-app.attiva { display: block; }
-  .card-bianca { background-color: white; border: 1px solid #e2e8f0; padding: 18px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: stretch; }
-  .titolo-sezione { margin-top: 0; margin-bottom: 14px; color: #059669; font-size: 16px; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
-  #box-installazione { display: none; background-color: #f0fdf4; border: 2px dashed #22c55e; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px; }
-  .btn-installa-app { background-color: #22c55e; color: white; border: none; padding: 12px 24px; border-radius: 25px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); width: 100%; box-sizing: border-box; }
-  .widget-idratazione { background-color: #e0f2fe; border: 1px solid #bae6fd; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px; }
-  .btn-acqua-pill { background-color: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 4px; }
-  .btn-acqua-grigio { background-color: #64748b; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 4px; }
-  .macro-gruppo { margin-bottom: 12px; }
-  .macro-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .barra-sfondo { background-color: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
-  .barra-avanzamento { height: 100%; border-radius: 10px; width: 0%; transition: width 0.3s; }
-  .cibo-item { border-left: 4px solid #f59e0b; padding-left: 12px; margin-bottom: 14px; position: relative; }
-  .cibo-riga-sup { display: flex; justify-content: space-between; align-items: center; }
-  .cibo-nome { font-weight: bold; font-size: 15px; }
-  .cibo-kcal { color: #be123c; font-weight: bold; font-size: 14px; }
-  .btn-elimina-cibo { background-color: #ffe4e6; color: #b91c1c; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; }
-  .cibo-sotto { font-size: 12px; color: #64748b; margin-top: 2px; }
-  .input-gruppo { margin-bottom: 12px; width: 100%; box-sizing: border-box; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
   .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
-  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
-  .riga-input-macro { display: flex; gap: 6px; }
-  .btn-primario { background-color: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
-  .btn-rosso { background-color: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
-  .btn-scan { background-color: #0284c7; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 12px; text-align: center; }
-  .galleria-foto { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-  .foto-wrapper { position: relative; aspect-ratio: 1; }
-  .foto-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
-  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); z-index: 9999; }
-  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 11px; cursor: pointer; font-weight: 500; }
-  .nav-item.attivo { color: #059669; font-weight: 700; }
-  .nav-icona { font-size: 20px; margin-bottom: 2px; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
 </style>
 </head>
 <body>
-<header id="titolo-header">MANGIA BENE</header>
+<header id="titolo-header">DIARIO</header>
 <main>
-    <!-- SCHERMATA DIARIO -->
-    <div id="schermata-diario" class="schermata-app attiva">
-      <div id="box-installazione">
-        <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #166534;">🌟 Installa Mangia Bene sul tuo telefono!</div>
-        <button class="btn-installa-app" id="btn-installa-pwa">Aggiungi a Schermata Home</button>
-      </div>
-      <div class="widget-idratazione">
-        <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #0369a1;">Idratazione Odierna</div>
-        <div style="font-size: 22px; font-weight: 800; margin-bottom: 10px; color: #0c4a6e;"><span id="valore-acqua">0</span> / 2000 ml</div>
-        <div>
-          <button class="btn-acqua-pill" onclick="aggiungiAcqua(250)">+250ml Bicchiere</button>
-          <button class="btn-acqua-pill" onclick="aggiungiAcqua(500)">+500ml Bottiglia</button>
-          <button class="btn-acqua-grigio" onclick="azzeraAcqua()">Azzera</button>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
         </div>
-      </div>
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Riepilogo Nutrizionale</h3>
-        <div class="macro-gruppo"><div class="macro-info"><span>Calorie</span><span id="testo-kcal">0 / 2000 kcal</span></div><div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background-color: #ef4444;"></div></div></div>
-        <div class="macro-gruppo"><div class="macro-info"><span>Carboidrati</span><span id="testo-carbo">0 / 250g</span></div><div class="barra-sfondo"><div id="barra-carbo" class="barra-avanzamento" style="background-color: #3b82f6;"></div></div></div>
-        <div class="macro-gruppo"><div class="macro-info"><span>Proteine</span><span id="testo-prot">0 / 120g</span></div><div class="barra-sfondo"><div id="barra-prot" class="barra-avanzamento" style="background-color: #10b981;"></div></div></div>
-        <div class="macro-gruppo"><div class="macro-info"><span>Grassi</span><span id="testo-grassi">0 / 65g</span></div><div class="barra-sfondo"><div id="barra-grassi" class="barra-avanzamento" style="background-color: #f59e0b;"></div></div></div>
-      </div>
-      <div class="card-bianca"><h3 class="titolo-sezione">Alimenti Consumati</h3><div id="lista-alimenti-inseriti"></div></div>
-    </div>
-
-    <!-- SCHERMATA AGGIUNGI CIBO -->
-    <div id="schermata-aggiungi" class="schermata-app">
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Nuovo Alimento</h3>
-        <div class="input-gruppo"><label>Nome Alimento / Pasto</label><input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta al pomodoro"></div>
-        <div class="riga-input-macro">
-          <div class="input-gruppo"><label>Kcal</label><input type="number" id="input-cibo-kcal" class="input-field" placeholder="0"></div>
-          <div class="input-gruppo"><label>Carbo (g)</label><input type="number" id="input-cibo-carbo" class="input-field" placeholder="0"></div>
-        </div>
-        <div class="riga-input-macro">
-          <div class="input-gruppo"><label>Prot (g)</label><input type="number" id="input-cibo-prot" class="input-field" placeholder="0"></div>
-          <div class="input-gruppo"><label>Grassi (g)</label><input type="number" id="input-cibo-grassi" class="input-field" placeholder="0"></div>
-        </div>
-        <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva nel Diario</button>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
       </div>
     </div>
-
-    <!-- SCHERMATA FOTO / SCAN -->
-    <div id="schermata-scan" class="schermata-app">
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Scatta o Carica Foto</h3>
-        <button class="btn-scan" onclick="document.getElementById('input-file-foto').click()">📸 Fai una Foto al Pasto</button>
-        <input type="file" id="input-file-foto" accept="image/*" capture="environment" style="display:none" onchange="gestisciNuovaFoto(event)">
-        <div class="galleria-foto" id="contenitore-galleria"></div>
-      </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
     </div>
-
-    <!-- SCHERMATA PROFILO -->
-    <div id="schermata-profilo" class="schermata-app">
-      <div class="card-bianca">
-        <h3 class="titolo-sezione">Il Tuo Profilo</h3>
-        <div class="input-gruppo"><label>Obiettivo Calorie Giornaliere</label><input type="number" id="profilo-target-kcal" class="input-field" value="2000"></div>
-        <button class="btn-primario" onclick="salvaImpostazioniProfilo()" style="margin-bottom:10px">Aggiorna Obiettivi</button>
-        <button class="btn-rosso" onclick="azzeraTuttiIDati()">Azzera Tutti i Dati di Oggi</button>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
       </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
     </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
 </main>
-
-<div class="barra-navigazione">
-  <div class="nav-item attivo" onclick="cambiaSchermata('diario')">
-    <div class="nav-icona">📅</div>
-    <div>Diario</div>
-  </div>
-  <div class="nav-item" onclick="cambiaSchermata('aggiungi')">
-    <div class="nav-icona">➕</div>
-    <div>Aggiungi</div>
-  </div>
-  <div class="nav-item" onclick="cambiaSchermata('scan')">
-    <div class="nav-icona">📸</div>
-    <div>Scan</div>
-  </div>
-  <div class="nav-item" onclick="cambiaSchermata('profilo')">
-    <div class="nav-icona">👤</div>
-    <div>Profilo</div>
-  </div>
-</div>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
 
 <script>
-  let datiApp = {
-    acqua: 0,
-    alimenti: [],
-    targetKcal: 2000,
-    targetCarbo: 250,
-    targetProt: 120,
-    targetGrassi: 65,
-    foto: []
-  };
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
 
-  function cambiaSchermata(nomeSchermata) {
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
+  });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
     document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
     document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
-    event.currentTarget.classList.add('attivo');
-  }
-
-  function aggiungiAcqua(qta) {
-    datiApp.acqua += qta;
-    aggiornaGrafica();
-  }
-
-  function azzeraAcqua() {
-    datiApp.acqua = 0;
-    aggiornaGrafica();
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
   }
 
   function salvaNuovoAlimento() {
-    const nome = document.getElementById('input-cibo-nome').value || "Alimento generico";
+    const nome = document.getElementById('input-cibo-nome').value.trim();
     const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
-    const carbo = parseInt(document.getElementById('input-cibo-carbo').value) || 0;
-    const prot = parseInt(document.getElementById('input-cibo-prot').value) || 0;
-    const grassi = parseInt(document.getElementById('input-cibo-grassi').value) || 0;
-
-    datiApp.alimenti.push({ id: Date.now(), nome, kcal, carbo, prot, grassi });
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
     
-    document.getElementById('input-cibo-nome').value = '';
-    document.getElementById('input-cibo-kcal').value = '';
-    document.getElementById('input-cibo-carbo').value = '';
-    document.getElementById('input-cibo-prot').value = '';
-    document.getElementById('input-cibo-grassi').value = '';
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
 
-    cambiaSchermata('diario');
-    // Forziamo il ripristino del focus visivo sull'icona diario
-    document.querySelectorAll('.nav-item')[0].classList.add('attivo');
-    aggiornaGrafica();
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
   }
 
   function eliminaAlimento(id) {
-    datiApp.alimenti = datiApp.alimenti.filter(a => a.id !== id);
-    aggiornaGrafica();
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
   }
 
   function salvaImpostazioniProfilo() {
-    const nuovoTarget = parseInt(document.getElementById('profilo-target-kcal').value) || 2000;
-    datiApp.targetKcal = nuovoTarget;
-    // Ricalcolo proporzionale automatico dei macro basato sulle nuove calorie
-    datiApp.targetCarbo = Math.round((nuovoTarget * 0.5) / 4);
-    datiApp.targetProt = Math.round((nuovoTarget * 0.24) / 4);
-    datiApp.targetGrassi = Math.round((nuovoTarget * 0.29) / 9);
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
     
-    alert("Obiettivi aggiornati con successo!");
-    cambiaSchermata('diario');
-    document.querySelectorAll('.nav-item')[0].classList.add('attivo');
-    aggiornaGrafica();
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
   }
 
-  function azzeraTuttiIDati() {
-    if(confirm("Vuoi davvero azzerare il diario di oggi?")) {
-      datiApp.acqua = 0;
-      datiApp.alimenti = [];
-      datiApp.foto = [];
-      aggiornaGrafica();
-      alert("Dati azzerati!");
-      cambiaSchermata('diario');
-      document.querySelectorAll('.nav-item')[0].classList.add('attivo');
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
     }
   }
 
-  function gestisciNuovaFoto(event) {
-    const file = event.target.files[0];
-    if (file) {
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = function(e) {
-        const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-        datiApp.foto.push({ id: Date.now(), src: e.target.result, orario: ora });
-        aggiornaGrafica();
-      };
       reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
+  });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
     }
   }
 
-  function eliminaFoto(id) {
-    datiApp.foto = datiApp.foto.filter(f => f.id !== id);
-    aggiornaGrafica();
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
   }
 
-  function aggiornaGrafica() {
-    document.getElementById('valore-acqua').innerText = datiApp.acqua;
-
-    let totKcal = 0, totCarbo = 0, totProt = 0, totGrassi = 0;
-    datiApp.alimenti.forEach(a => {
-      totKcal += a.kcal;
-      totCarbo += a.carbo;
-      totProt += a.prot;
-      totGrassi += a.grassi;
-    });
-
-    document.getElementById('testo-kcal').innerText = totKcal + " / " + datiApp.targetKcal + " kcal";
-    document.getElementById('testo-carbo').innerText = totCarbo + " / " + datiApp.targetCarbo + "g";
-    document.getElementById('testo-prot').innerText = totProt + " / " + datiApp.targetProt + "g";
-    document.getElementById('testo-grassi').innerText = totGrassi + " / " + datiApp.targetGrassi + "g";
-
-    let pKcal = Math.min((totKcal / datiApp.targetKcal) * 100, 100);
-    let pCarbo = Math.min((totCarbo / datiApp.targetCarbo) * 100, 100);
-    let pProt = Math.min((totProt / datiApp.targetProt) * 100, 100);
-    let pGrassi = Math.min((totGrassi / datiApp.targetGrassi) * 100, 100);
-
-    document.getElementById('barra-kcal').style.width = pKcal + "%";
-    document.getElementById('barra-carbo').style.width = pCarbo + "%";
-    document.getElementById('barra-prot').style.width = pProt + "%";
-    document.getElementById('barra-grassi').style.width = pGrassi + "%";
-
-    const listaHtml = document.getElementById('lista-alimenti-inseriti');
-    listaHtml.innerHTML = '';
-    datiApp.alimenti.forEach(a => {
-      listaHtml.innerHTML += `
-        <div class="cibo-item">
-          <div class="cibo-riga-sup">
-            <span class="cibo-nome">${a.nome}</span>
-            <span class="cibo-kcal">${a.kcal} kcal</span>
-          </div>
-          <div class="cibo-sotto">Carbo: ${a.carbo}g | Prot: ${a.prot}g | Grassi: ${a.grassi}g</div>
-          <div style="margin-top:6px; text-align:right;">
-            <button class="btn-elimina-cibo" onclick="eliminaAlimento(${a.id})">Elimina</button>
-          </div>
-        </div>`;
-    });
-
-    const galleriaHtml = document.getElementById('contenitore-galleria');
-    galleriaHtml.innerHTML = '';
-    datiApp.foto.forEach(f => {
-      galleriaHtml.innerHTML += `
-        <div class="foto-wrapper">
-          <img src="${f.src}" class="foto-img">
-          <button class="foto-canc" onclick="eliminaFoto(${f.id})">✕</button>
-          <div class="foto-orario">${f.orario}</div>
-        </div>`;
-    });
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
   }
 
-  let deferredPrompt;
-  const boxInstallazione = document.getElementById('box-installazione');
-  const btnInstalla = document.getElementById('btn-installa-pwa');
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    boxInstallazione.style.display = 'block';
-  });
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
 
-  btnInstalla.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      boxInstallazione.style.display = 'none';
-      deferredPrompt = null;
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
     }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
   });
 
-  window.addEventListener('appinstalled', () => {
-    boxInstallazione.style.display = 'none';
-    deferredPrompt = null;
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
+
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
   });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
+
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
+  });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
+
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
+  });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
+
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
+  });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
+
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
+  });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
+
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MANGIA BENE</title>
+<style>
+  body { font-family: sans-serif; background: #f8fafc; color: #334155; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  header { padding: 16px; text-align: center; font-weight: bold; color: #059669; background: white; border-bottom: 1px solid #e2e8f0; font-size: 18px; }
+  main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
+  .schermata-app { display: none; }
+  .schermata-app.attiva { display: block; }
+  .card-bianca { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .titolo-sezione { margin: 0 0 12px 0; color: #059669; font-size: 16px; }
+  .macro-gruppo { margin-bottom: 10px; }
+  .barra-sfondo { background: #e2e8f0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
+  .barra-avanzamento { height: 100%; width: 0%; transition: width 0.3s; }
+  .input-gruppo { margin-bottom: 12px; }
+  .input-gruppo label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+  .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+  .btn-primario { background: #059669; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .btn-rosso { background: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 14px; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 13px; cursor: pointer; }
+  .nav-item.attivo { color: #059669; font-weight: bold; }
+</style>
+</head>
+<body>
+<header id="titolo-header">DIARIO</header>
+<main>
+  <div id="schermata-diario" class="schermata-app attiva">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Riepilogo Calorie</h3>
+      <div class="macro-gruppo">
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; font-weight:600;">
+          <span>Calorie Odierne</span><span id="testo-kcal">0 / 2000 kcal</span>
+        </div>
+        <div class="barra-sfondo"><div id="barra-kcal" class="barra-avanzamento" style="background: #ef4444;"></div></div>
+      </div>
+    </div>
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Alimenti Consumati</h3>
+      <div id="lista-alimenti-inseriti"></div>
+    </div>
+  </div>
+  <div id="schermata-aggiungi" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Nuovo Alimento</h3>
+      <div class="input-gruppo">
+        <label>Nome Alimento</label>
+        <input type="text" id="input-cibo-nome" class="input-field" placeholder="Es. Pasta">
+      </div>
+      <div class="input-gruppo">
+        <label>Calorie (kcal)</label>
+        <input type="number" id="input-cibo-kcal" class="input-field" placeholder="0">
+      </div>
+      <button class="btn-primario" onclick="salvaNuovoAlimento()">Salva Alimento</button>
+    </div>
+  </div>
+  <div id="schermata-profilo" class="schermata-app">
+    <div class="card-bianca">
+      <h3 class="titolo-sezione">Obiettivo Calorico</h3>
+      <div class="input-gruppo">
+        <label>Target Calorie (kcal)</label>
+        <input type="number" id="profilo-kcal" class="input-field" value="2000">
+      </div>
+      <button class="btn-primario" onclick="salvaImpostazioniProfilo()">Aggiorna Obiettivo</button>
+    </div>
+    <div class="card-bianca">
+      <button class="btn-rosso" onclick="resetCompletoApplicazione()">Reset Totale Dati</button>
+    </div>
+  </div>
+</main>
+<nav class="barra-navigazione">
+  <div class="nav-item attivo" onclick="cambiaSchermata('diario', this)"><span>📊 Diario</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('aggiungi', this)"><span>➕ Aggiungi</span></div>
+  <div class="nav-item" onclick="cambiaSchermata('profilo', this)"><span>👤 Profilo</span></div>
+</nav>
+
+<script>
+  let datiApp = { alimenti: [], target: { kcal: 2000 } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    caricaDatiSorgente();
+    renderizzaTutto();
+  });
+
+  function caricaDatiSorgente() {
+    const salvati = localStorage.getItem('MANGIA_BENE_NUOVO');
+    if (salvati) {
+      try {
+        datiApp = JSON.parse(salvati);
+        if (!datiApp.target) datiApp.target = { kcal: 2000 };
+        if (!datiApp.alimenti) datiApp.alimenti = [];
+      } catch (e) { console.error(e); }
+    }
+  }
+
+  function salvaDatiSuStorage() {
+    localStorage.setItem('MANGIA_BENE_NUOVO', JSON.stringify(datiApp));
+  }
+
+  function cambiaSchermata(nomeSchermata, elementoNav) {
+    document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
+    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
+    if(elementoNav) elementoNav.classList.add('attivo');
+    document.getElementById('titolo-header').innerText = nomeSchermata.toUpperCase();
+  }
+
+  function salvaNuovoAlimento() {
+    const nome = document.getElementById('input-cibo-nome').value.trim();
+    const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
+    if (!nome) { alert("Inserisci il nome dell'alimento."); return; }
+    
+    datiApp.alimenti.push({ id: Date.now(), nome: nome, kcal: kcal });
+    salvaDatiSuStorage();
+    renderizzaTutto();
+
+    document.getElementById('input-cibo-nome').value = "";
+    document.getElementById('input-cibo-kcal').value = "";
+    
+    const primoTabNav = document.querySelectorAll('.nav-item')[0];
+    cambiaSchermata('diario', primoTabNav);
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(i => i.id !== id);
+    salvaDatiSuStorage();
+    renderizzaTutto();
+  }
+
+  function salvaImpostazioniProfilo() {
+    datiApp.target.kcal = parseInt(document.getElementById('profilo-kcal').value) || 2000;
+    salvaDatiSuStorage();
+    renderizzaTutto();
+    alert("Obiettivo aggiornato con successo!");
+  }
+
+    function resetCompletoApplicazione() {
+    if (confirm("Sei sicuro di voler azzerare tutti i dati?")) {
+      localStorage.removeItem('MANGIA_BENE_NUOVO');
+      location.reload();
+    }
+  }
+
+  function renderizzaTutto() {
+    document.getElementById('profilo-kcal').value = datiApp.target.kcal;
+    let totaleKcal = 0;
+    let html = "";
+    
+    datiApp.alimenti.forEach(cibo => {
+      totaleKcal += cibo.kcal;
+      html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-left:4px solid #f59e0b; padding-left:8px; font-size:15px; align-items:center;">
+        <span><b>${cibo.nome}</b> - ${cibo.kcal} kcal</span>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold; font-size:16px;" onclick="eliminaAlimento(${cibo.id})">✕</button>
+      </div>`;
+    });
+
+    document.getElementById('lista-alimenti-inseriti').innerHTML = html || "<p style='font-size:13px; color:#64748b; margin:0;'>Nessun alimento inserito oggi.</p>";
+    document.getElementById('testo-kcal').innerText = totaleKcal + " / " + datiApp.target.kcal + " kcal";
+    
+    let perc = Math.min((totaleKcal / datiApp.target.kcal) * 100, 100) + "%";
+    document.getElementById('barra-kcal').style.width = perc;
+  }
+
+  // ==========================================
+  // NUOVA FUNZIONE: SCANNER AI PER IMMAGINI
+  // ==========================================
+  async function analizzaPiattoConAI() {
+    const apiKey = document.getElementById('input-api-key').value.trim();
+    const aiScelta = document.getElementById('selettore-ai').value;
+    const fileInput = document.getElementById('input-foto-piatto');
+    const stato = document.getElementById('stato-caricamento');
+
+    if (!apiKey) { alert("Per favore, inserisci la tua API Key."); return; }
+    if (!fileInput.files || fileInput.files.length === 0) { alert("Per favore, scatta o seleziona una foto prima."); return; }
+
+    const file = fileInput.files[0];
+    stato.innerText = "🔄 Elaborazione immagine e analisi AI in corso...";
+    stato.style.display = "block";
+
+    try {
+      const base64Data = await altoparlanteConvertiBase64(file);
+      const soloBase64 = base64Data.split(',')[1];
+      const mimeType = file.type;
+
+      let nomeRilevato = "";
+      let calorieRilevate = 0;
+
+      const promptIstruzioni = "Analizza questa foto di cibo. Restituisci ESCLUSIVAMENTE un oggetto JSON con questo formato esatto, senza testi esplicativi, senza blocchi di codice markdown o apici: {\"alimento\": \"Nome del piatto\", \"calorie\": 350}";
+
+      if (aiScelta === 'gemini') {
+        const urlGemini = `https://googleapis.com{apiKey}`;
+        const risposta = await fetch(urlGemini, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: mimeType, data: soloBase64 } }
+              ]
+            }]
+          })
+        });
+        
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.candidates[0].content.parts[0].text;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+
+      } else if (aiScelta === 'openai') {
+        const urlOpenAI = "https://openai.com";
+        const risposta = await fetch(urlOpenAI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{
+              role: "user",
+              content: [
+                { type: "text", text: promptIstruzioni },
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${soloBase64}` } }
+              ]
+            }]
+          })
+        });
+
+        const datiJson = await risposta.json();
+        const testoRisposta = datiJson.choices[0].message.content;
+        const pulito = testoRisposta.replace(/```json|```/g, "").trim();
+        const risultatoObj = JSON.parse(pulito);
+        nomeRilevato = risultatoObj.alimento;
+        calorieRilevate = parseInt(risultatoObj.calorie) || 0;
+      }
+
+      if (nomeRilevato) {
+        datiApp.alimenti.push({ id: Date.now(), nome: "📸 " + nomeRilevato, kcal: calorieRilevate });
+        salvaDatiSuStorage();
+        renderizzaTutto();
+        
+        stato.innerText = `✅ Rilevato: ${nomeRilevato} (${calorieRilevate} kcal)! Aggiunto al diario.`;
+        fileInput.value = ""; 
+        
+        setTimeout(() => {
+          stato.style.display = "none";
+          cambiaSchermata('diario', document.querySelectorAll('.nav-item')[0]);
+        }, 2000);
+      } else {
+        throw new Error("Dati non validi");
+      }
+
+    } catch (errore) {
+      console.error(errore);
+      stato.innerText = "❌ Errore durante l'analisi. Controlla la chiave API o la foto.";
+    }
+  }
+
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
+  function altoparlanteConvertiBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = errore => reject(errore);
+    });
+  }
 </script>
 </body>
 </html>
