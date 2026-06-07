@@ -174,10 +174,10 @@
     localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
   }
 
-  function azzeraAcqua() {
+    function azzeraAcqua() {
     datiApp.acqua = 0;
-    aggiornaGrafica();
     localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
+    aggiornaGrafica();
   }
 
   function salvaNuovoAlimento() {
