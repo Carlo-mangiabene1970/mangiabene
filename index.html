@@ -147,7 +147,8 @@
 </div>
 
 <script>
-  let datiApp = {
+   // Valori standard di base se l'app viene aperta per la primissima volta
+  const valoriIniziali = {
     acqua: 0,
     alimenti: [],
     targetKcal: 2000,
@@ -156,6 +157,9 @@
     targetGrassi: 65,
     foto: []
   };
+
+  // Carica i dati salvati nel telefono, altrimenti usa quelli iniziali
+  let datiApp = JSON.parse(localStorage.getItem('mangiabene_dati')) || valoriIniziali;
 
   function cambiaSchermata(nomeSchermata) {
     document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
