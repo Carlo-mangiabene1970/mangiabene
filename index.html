@@ -247,6 +247,15 @@
   }
 
   function aggiornaGrafica() {
+    // Legge la memoria del telefono se esiste, altrimenti mantiene i dati attuali
+    const datiSalvati = localStorage.getItem('mangiabene_dati');
+    if (datiSalvati) {
+      const datiLetti = JSON.parse(datiSalvati);
+      // Se l'oggetto datiApp non è ancora stato caricato del tutto, lo sincronizza
+      if (datiLetti.hasOwnProperty('acqua')) datiApp.acqua = datiLetti.acqua;
+      if (datiLetti.alimenti) datiApp.alimenti = datiLetti.alimenti;
+    }
+
     document.getElementById('valore-acqua').innerText = datiApp.acqua;
 
     let totKcal = 0, totCarbo = 0, totProt = 0, totGrassi = 0;
