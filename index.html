@@ -43,17 +43,27 @@
   .btn-rosso { background-color: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
   .btn-scan { background-color: #0284c7; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 12px; text-align: center; }
   .galleria-foto { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-  .foto-wrapper { position: relative; aspect-ratio: 1; }
+    .foto-wrapper { position: relative; aspect-ratio: 1; }
   .foto-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
-  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 60px; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); z-index: 9999; }
+  .barra-navigazione { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; height: 65px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 9999; padding-bottom: env(safe-area-inset-bottom); }
   .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 11px; cursor: pointer; font-weight: 500; }
   .nav-item.attivo { color: #059669; font-weight: 700; }
   .nav-icona { font-size: 20px; margin-bottom: 2px; }
 </style>
+
+<!-- AGGIUNTA CRITICA: Collegamento al manifest e all'icona per attivare l'installazione corretta -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#059669">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 </head>
 <body>
-<header id="titolo-header">MANGIA BENE</header>
-<main>
+<header id="titolo-header" style="text-align: center; font-size: 20px; font-weight: bold; padding: 16px 0; background-color: #059669; color: white;">MANGIA BENE</header>
+
+<!-- Modificato il tag main per evitare sovrapposizioni in basso sullo schermo del telefono -->
+<main style="padding: 16px; padding-bottom: 95px; box-sizing: border-box;">
     <!-- SCHERMATA DIARIO -->
     <div id="schermata-diario" class="schermata-app attiva">
       <div id="box-installazione">
