@@ -180,7 +180,7 @@
     aggiornaGrafica();
   }
 
-  function salvaNuovoAlimento() {
+    function salvaNuovoAlimento() {
     const nome = document.getElementById('input-cibo-nome').value || "Alimento generico";
     const kcal = parseInt(document.getElementById('input-cibo-kcal').value) || 0;
     const carbo = parseInt(document.getElementById('input-cibo-carbo').value) || 0;
@@ -189,6 +189,12 @@
 
     datiApp.alimenti.push({ id: Date.now(), nome, kcal, carbo, prot, grassi });
     
+    // AGGIUNTA 1: Salva i dati del cibo nella memoria fissa del telefono
+    localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
+    
+    // AGGIUNTA 2: Aggiorna subito i numeri delle calorie sullo schermo
+    aggiornaGrafica();
+
     document.getElementById('input-cibo-nome').value = '';
     document.getElementById('input-cibo-kcal').value = '';
     document.getElementById('input-cibo-carbo').value = '';
@@ -196,7 +202,8 @@
     document.getElementById('input-cibo-grassi').value = '';
 
     cambiaSchermata('diario');
-    // Forziamo il ripristino del focus visivo sull'icona diario
+  }
+
     document.querySelectorAll('.nav-item')[0].classList.add('attivo');
       function aggiornaGrafica() {
     // Stampiamo l'acqua corrente senza sovrascriverla con i vecchi dati
