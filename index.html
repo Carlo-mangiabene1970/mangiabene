@@ -232,7 +232,6 @@
     cambiaSchermata('diario');
     document.querySelectorAll('.nav-item')[0].classList.add('attivo');
     aggiornaGrafica();
-  }
     // --- CONFIGURAZIONE INTEGRAZIONE GEMINI REAL IA ---
   // Abbiamo diviso la chiave in due parti per aggirare il blocco di sicurezza di GitHub!
   const chiave_parte1 = "AQ.Ab8RN6LSiCbxmBSdzcbcXYMq6gnD";
@@ -293,10 +292,10 @@
       datiApp.acqua = 0;
       datiApp.alimenti = [];
       datiApp.foto = [];
+      localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
       aggiornaGrafica();
       alert("Dati azzerati!");
       cambiaSchermata('diario');
-      document.querySelectorAll('.nav-item')[0].classList.add('attivo');
     }
   }
 
@@ -307,6 +306,7 @@
       reader.onload = function(e) {
         const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
         datiApp.foto.push({ id: Date.now(), src: e.target.result, orario: ora });
+        localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
         aggiornaGrafica();
       };
       reader.readAsDataURL(file);
@@ -315,17 +315,23 @@
 
   function eliminaFoto(id) {
     datiApp.foto = datiApp.foto.filter(f => f.id !== id);
+    localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
+    aggiornaGrafica();
+  }
+
+  function eliminaAlimento(id) {
+    datiApp.alimenti = datiApp.alimenti.filter(a => a.id !== id);
+    localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
     aggiornaGrafica();
   }
 
   function aggiornaGrafica() {
-    // Legge la memoria del telefono se esiste, altrimenti mantiene i dati attuali
     const datiSalvati = localStorage.getItem('mangiabene_dati');
     if (datiSalvati) {
       const datiLetti = JSON.parse(datiSalvati);
-      // Se l'oggetto datiApp non è ancora stato caricato del tutto, lo sincronizza
       if (datiLetti.hasOwnProperty('acqua')) datiApp.acqua = datiLetti.acqua;
       if (datiLetti.alimenti) datiApp.alimenti = datiLetti.alimenti;
+      if (datiLetti.foto) datiApp.foto = datiLetti.foto;
     }
 
     document.getElementById('valore-acqua').innerText = datiApp.acqua;
@@ -354,32 +360,40 @@
     document.getElementById('barra-grassi').style.width = pGrassi + "%";
 
     const listaHtml = document.getElementById('lista-alimenti-inseriti');
-    listaHtml.innerHTML = '';
-    datiApp.alimenti.forEach(a => {
-      listaHtml.innerHTML += `
-        <div class="cibo-item">
-          <div class="cibo-riga-sup">
-            <span class="cibo-nome">${a.nome}</span>
-            <span class="cibo-kcal">${a.kcal} kcal</span>
-          </div>
-          <div class="cibo-sotto">Carbo: ${a.carbo}g | Prot: ${a.prot}g | Grassi: ${a.grassi}g</div>
-          <div style="margin-top:6px; text-align:right;">
-            <button class="btn-elimina-cibo" onclick="eliminaAlimento(${a.id})">Elimina</button>
-          </div>
-        </div>`;
-    });
+    if (listaHtml) {
+      listaHtml.innerHTML = '';
+      datiApp.alimenti.forEach(a => {
+        listaHtml.innerHTML += `
+          <div class="cibo-item">
+            <div class="cibo-riga-sup">
+              <span class="cibo-nome">${a.nome}</span>
+              <span class="cibo-kcal">${a.kcal} kcal</span>
+            </div>
+            <div class="cibo-sotto">Carbo: ${a.carbo}g | Prot: ${a.prot}g | Grassi: ${a.grassi}g</div>
+            <div style="margin-top:6px; text-align:right;">
+              <button class="btn-elimina-cibo" onclick="eliminaAlimento(${a.id})">Elimina</button>
+            </div>
+          </div>`;
+      });
+    }
 
     const galleriaHtml = document.getElementById('contenitore-galleria');
-    galleriaHtml.innerHTML = '';
-    datiApp.foto.forEach(f => {
-      galleriaHtml.innerHTML += `
-        <div class="foto-wrapper">
-          <img src="${f.src}" class="foto-img">
-          <button class="foto-canc" onclick="eliminaFoto(${f.id})">✕</button>
-          <div class="foto-orario">${f.orario}</div>
-        </div>`;
-    });
+    if (galleriaHtml) {
+      galleriaHtml.innerHTML = '';
+      datiApp.foto.forEach(f => {
+        galleriaHtml.innerHTML += `
+          <div class="foto-wrapper">
+            <img src="${f.src}" class="foto-img">
+            <button class="foto-canc" onclick="eliminaFoto(${f.id})">✕</button>
+            <div class="foto-orario">${f.orario}</div>
+          </div>`;
+      });
+    }
   }
+
+  window.addEventListener('DOMContentLoaded', () => { 
+    aggiornaGrafica(); 
+  });
 
   let deferredPrompt;
   const boxInstallazione = document.getElementById('box-installazione');
@@ -400,12 +414,11 @@
     }
   });
 
-    window.addEventListener('appinstalled', () => {
+  window.addEventListener('appinstalled', () => {
     boxInstallazione.style.display = 'none';
     deferredPrompt = null;
   });
 
-  // AGGIUNTA CRITICA: Questo dice al telefono di attivare il "turbo" e memorizzare l'app in locale
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js')
