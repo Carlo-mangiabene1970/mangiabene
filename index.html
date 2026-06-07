@@ -164,14 +164,16 @@
     event.currentTarget.classList.add('attivo');
   }
 
-  function aggiungiAcqua(qta) {
+    function aggiungiAcqua(qta) {
     datiApp.acqua += qta;
     aggiornaGrafica();
+    localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
   }
 
   function azzeraAcqua() {
     datiApp.acqua = 0;
     aggiornaGrafica();
+    localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
   }
 
   function salvaNuovoAlimento() {
