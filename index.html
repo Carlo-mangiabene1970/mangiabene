@@ -317,10 +317,19 @@
     }
   });
 
-  window.addEventListener('appinstalled', () => {
+    window.addEventListener('appinstalled', () => {
     boxInstallazione.style.display = 'none';
     deferredPrompt = null;
   });
+
+  // AGGIUNTA CRITICA: Questo dice al telefono di attivare il "turbo" e memorizzare l'app in locale
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Mangiabene salvata in memoria con successo!', reg))
+        .catch(err => console.log('Errore nel salvataggio in memoria:', err));
+    });
+  }
 </script>
 </body>
 </html>
