@@ -308,19 +308,72 @@
     }
   }
 
-  function gestisciNuovaFoto(event) {
+    function gestisciNuovaFoto(event) {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-        datiApp.foto.push({ id: Date.now(), src: e.target.result, orario: ora });
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+      const immagineBase64 = e.target.result;
+
+      // Salva prima la foto nella galleria visiva dell'app
+      datiApp.foto.push({ id: Date.now(), src: immagineBase64, orario: ora });
+      localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
+      aggiornaGrafica();
+
+      alert("IA Gemini: Sto analizzando la foto del tuo piatto...");
+
+      // Puliamo i dati dell'immagine Base64 per estrarre solo la stringa che vuole Google
+      const tipoMime = immagineBase64.substring(immagineBase64.indexOf(":") + 1, immagineBase64.indexOf(";"));
+      const datiDellaFoto = immagineBase64.split(",")[1];
+
+      const promptIstruzioni = "Analizza l'alimento presente in questa foto. Estrai le calorie totali (kcal), carboidrati (g), proteine (g) e grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON scritto esattamente così, senza aggiungere altre parole o spiegazioni: {\"nome\": \"Nome del piatto\", \"kcal\": 350, \"carbo\": 40, \"prot\": 15, \"grassi\": 10}";
+
+      try {
+        // Chiamata ai server di Google Gemini per l'analisi delle immagini
+        const response = await fetch(`https://googleapis.com{GEMINI_API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: promptIstruzioni },
+                { inlineData: { mimeType: tipoMime, data: datiDellaFoto } }
+              ]
+            }]
+          })
+        });
+
+        const data = await response.json();
+        const testoRispostaIA = data.candidates[0].content.parts[0].text;
+        
+        const jsonPulito = testoRispostaIA.replace(/```json|```/g, "").trim();
+        const ciboScansionato = JSON.parse(jsonPulito);
+
+        // Aggiunge il cibo riconosciuto nel diario
+        datiApp.alimenti.push({
+          id: Date.now(),
+          nome: "Foto: " + ciboScansionato.nome,
+          kcal: parseInt(ciboScansionato.kcal) || 0,
+          carbo: parseInt(ciboScansionato.carbo) || 0,
+          prot: parseInt(ciboScansionato.prot) || 0,
+          grassi: parseInt(ciboScansionato.grassi) || 0
+        });
+
         localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
         aggiornaGrafica();
-      };
-      reader.readAsDataURL(file);
-    }
+        
+        alert(`IA Gemini ha riconosciuto dalla foto: ${ciboScansionato.nome} (${ciboScansionato.kcal} kcal) e l'ha aggiunto al diario!`);
+
+      } catch (errore) {
+        console.error("Errore analisi foto:", errore);
+        alert("Oops! Gemini non è riuscito a leggere questa foto o la chiave API è bloccata.");
+      }
+    };
+    reader.readAsDataURL(file);
   }
+
 
   function eliminaFoto(id) {
     datiApp.foto = datiApp.foto.filter(f => f.id !== id);
