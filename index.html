@@ -233,6 +233,57 @@
     document.querySelectorAll('.nav-item')[0].classList.add('attivo');
     aggiornaGrafica();
   }
+  // --- CONFIGURAZIONE INTEGRAZIONE GEMINI REAL IA ---
+  const GEMINI_API_KEY = "INSERISCI_QUI_LA_TUA_CHIAVE_API"; 
+
+  async function inviaMessaggioChat() {
+    const inputChat = document.getElementById('input-chat-messaggio');
+    if (!inputChat) return;
+    
+    const testoUtente = inputChat.value.trim();
+    if (testoUtente === "") return;
+
+    console.log("Invio a Gemini: " + testoUtente);
+    inputChat.value = "Sto analizzando con l'IA...";
+
+    const promptIstruzioni = `Analizza questo pasto: "${testoUtente}". Estrai le calorie totali (kcal), carboidrati (g), proteine (g) e grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON scritto esattamente così, senza aggiungere altre parole o spiegazioni: {"nome": "Nome del piatto", "kcal": 350, "carbo": 40, "prot": 15, "grassi": 10}`;
+
+    try {
+      const response = await fetch(`https://googleapis.com{GEMINI_API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptIstruzioni }] }]
+        })
+      });
+
+      const data = await response.json();
+      const testoRispostaIA = data.candidates[0].content.parts[0].text;
+      
+      const jsonPulito = testoRispostaIA.replace(/```json|```/g, "").trim();
+      const ciboAnalizzato = JSON.parse(jsonPulito);
+
+      datiApp.alimenti.push({
+        id: Date.now(),
+        nome: ciboAnalizzato.nome,
+        kcal: parseInt(ciboAnalizzato.kcal) || 0,
+        carbo: parseInt(ciboAnalizzato.carbo) || 0,
+        prot: parseInt(ciboAnalizzato.prot) || 0,
+        grassi: parseInt(ciboAnalizzato.grassi) || 0
+      });
+
+      localStorage.setItem('mangiabene_dati', JSON.stringify(datiApp));
+      aggiornaGrafica();
+      
+      alert(`IA Gemini ha aggiunto: ${ciboAnalizzato.nome} (${ciboAnalizzato.kcal} kcal)`);
+      inputChat.value = "";
+
+    } catch (errore) {
+      console.error("Errore IA:", errore);
+      alert("Oops! Gemini non ha risposto. Controlla di aver inserito la chiave API corretta.");
+      inputChat.value = testoUtente;
+    }
+  }
 
   function azzeraTuttiIDati() {
     if(confirm("Vuoi davvero azzerare il diario di oggi?")) {
