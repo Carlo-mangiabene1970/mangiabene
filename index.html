@@ -198,22 +198,29 @@
     cambiaSchermata('diario');
     // Forziamo il ripristino del focus visivo sull'icona diario
     document.querySelectorAll('.nav-item')[0].classList.add('attivo');
-    aggiornaGrafica();
+      function aggiornaGrafica() {
+    // Stampiamo l'acqua corrente senza sovrascriverla con i vecchi dati
+    document.getElementById('valore-acqua').innerText = datiApp.acqua;
+
+    let totKcal = 0, totCarbo = 0, totProt = 0, totGrassi = 0;
+    datiApp.alimenti.forEach(a => {
+      totKcal += a.kcal;
+      totCarbo += a.carbo;
+      totProt += a.prot;
+      totGrassi += a.grassi;
+    });
+
+    document.getElementById('testo-kcal').innerText = totKcal + " / " + datiApp.targetKcal + " kcal";
+    document.getElementById('testo-carbo').innerText = totCarbo + " / " + datiApp.targetCarbo + "g";
+    document.getElementById('testo-prot').innerText = totProt + " / " + datiApp.targetProt + "g";
+    document.getElementById('testo-grassi').innerText = totGrassi + " / " + datiApp.targetGrassi + "g";
   }
 
-  function eliminaAlimento(id) {
-    datiApp.alimenti = datiApp.alimenti.filter(a => a.id !== id);
-    aggiornaGrafica();
-  }
+  // AGGIUNTA: Questo comando dice all'app di mostrare i dati salvati solo una volta all'avvio!
+  window.addEventListener('DOMContentLoaded', () => { 
+    aggiornaGrafica(); 
+  });
 
-  function salvaImpostazioniProfilo() {
-    const nuovoTarget = parseInt(document.getElementById('profilo-target-kcal').value) || 2000;
-    datiApp.targetKcal = nuovoTarget;
-    // Ricalcolo proporzionale automatico dei macro basato sulle nuove calorie
-    datiApp.targetCarbo = Math.round((nuovoTarget * 0.5) / 4);
-    datiApp.targetProt = Math.round((nuovoTarget * 0.24) / 4);
-    datiApp.targetGrassi = Math.round((nuovoTarget * 0.29) / 9);
-    
     alert("Obiettivi aggiornati con successo!");
     cambiaSchermata('diario');
     document.querySelectorAll('.nav-item')[0].classList.add('attivo');
