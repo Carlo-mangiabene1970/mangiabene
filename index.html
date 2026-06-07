@@ -411,7 +411,7 @@
     document.getElementById('testo-prot').innerText = totProt + " / " + datiApp.targetProt + "g";
     document.getElementById('testo-grassi').innerText = totGrassi + " / " + datiApp.targetGrassi + "g";
 
-    let pKcal = Math.min((totKcal / datiApp.targetKcal) * 100, 100);
+        let pKcal = Math.min((totKcal / datiApp.targetKcal) * 100, 100);
     let pCarbo = Math.min((totCarbo / datiApp.targetCarbo) * 100, 100);
     let pProt = Math.min((totProt / datiApp.targetProt) * 100, 100);
     let pGrassi = Math.min((totGrassi / datiApp.targetGrassi) * 100, 100);
@@ -420,6 +420,13 @@
     document.getElementById('barra-carbo').style.width = pCarbo + "%";
     document.getElementById('barra-prot').style.width = pProt + "%";
     document.getElementById('barra-grassi').style.width = pGrassi + "%";
+
+    // AGGIUNTA VIVACE: Coloriamo le barre per non lasciarle grigie!
+    document.getElementById('barra-kcal').style.backgroundColor = "#059669";   // Verde
+    document.getElementById('barra-carbo').style.backgroundColor = "#0284c7";  // Azzurro
+    document.getElementById('barra-prot').style.backgroundColor = "#ea580c";   // Arancione
+    document.getElementById('barra-grassi').style.backgroundColor = "#d97706"; // Giallo Ambra
+
 
     const listaHtml = document.getElementById('lista-alimenti-inseriti');
     if (listaHtml) {
