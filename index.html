@@ -161,12 +161,21 @@
   // Carica i dati salvati nel telefono, altrimenti usa quelli iniziali
   let datiApp = JSON.parse(localStorage.getItem('mangiabene_dati')) || valoriIniziali;
 
-  function cambiaSchermata(nomeSchermata) {
+    function cambiaSchermata(nomeSchermata) {
     document.querySelectorAll('.schermata-app').forEach(s => s.classList.remove('attiva'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('attivo'));
-    document.getElementById('schermata-' + nomeSchermata).classList.add('attiva');
-    event.currentTarget.classList.add('attivo');
+    
+    const schermataTarget = document.getElementById('schermata-' + nomeSchermata);
+    if (schermataTarget) {
+      schermataTarget.classList.add('attiva');
+    }
+    
+    // Protezione per evitare il blocco se l'evento click non è ancora pronto
+    if (typeof event !== 'undefined' && event && event.currentTarget) {
+      event.currentTarget.classList.add('attivo');
+    }
   }
+
 
     function aggiungiAcqua(qta) {
     datiApp.acqua += qta;
