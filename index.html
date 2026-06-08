@@ -135,7 +135,8 @@
       <h3>Scannerizza il tuo Pasto</h3>
       <p>Scatta una foto o carica un piatto per estrarre gli ingredienti e analizzarli con l'IA.</p>
       
-      <input type="file" id="input-foto" accept="image/*" style="display: none;">
+                 <input type="file" id="input-foto" accept="image/*" capture="environment" style="display: none;">
+
       <button class="btn" onclick="document.getElementById('input-foto').click()">📸 Fai una Foto al Pasto</button>
       
       <div id="anteprima-zona"></div>
