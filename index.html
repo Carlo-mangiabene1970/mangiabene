@@ -255,20 +255,73 @@
             return;
           }
 
-          if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+                   if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
             const testoRisposta = data.candidates[0].content.parts[0].text;
             bloccoRisposta.innerHTML = `🤖 <strong>Analisi Gemini:</strong><br>${testoRisposta}`;
+            
+            // --- LOGICA DIARIO: SALVATAGGIO AUTOMATICO ---
+            const oraAttuale = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+            
+            // Recupera i vecchi pasti dal telefono o crea una lista vuota se è la prima volta
+            let storicoPasti = JSON.parse(localStorage.getItem('mangiabene_diario')) || [];
+            
+            // Aggiunge il nuovo pasto in cima alla lista
+            storicoPasti.unshift({
+              orario: oraAttuale,
+              analisi: testoRisposta
+            });
+            
+            // Salva la lista aggiornata nella memoria del telefono
+            localStorage.setItem('mangiabene_diario', JSON.stringify(storicoPasti));
+            
+            // Aggiorna visivamente la scheda del Diario se la funzione esiste
+            if (typeof aggiornaGraficaDiario === "function") {
+              aggiornaGraficaDiario();
+            }
           } else {
             bloccoRisposta.innerHTML = "❌ Errore di lettura dal server dell'IA. Riprova lo scan.";
           }
 
-        } catch (error) {
-          console.error(error);
-          bloccoRisposta.innerHTML = "❌ Ops! Il server di Google non risponde o la chiave API è bloccata.";
         }
       };
       reader.readAsDataURL(file);
-    });
-  </script>
+   });
+ 
+// Funzione che legge la memoria del telefono e mostra i pasti nel Diario
+function aggiornaGraficaDiario() {
+  const listaContenitore = document.getElementById('lista-pasti-salvati');
+  if (!listaContenitore) return;
+
+  const storicoPasti = JSON.parse(localStorage.getItem('mangiabene_diario')) || [];
+
+  if (storicoPasti.length === 0) {
+    listaContenitore.innerHTML = 'Nessun pasto memorizzato in questo database.';
+    return;
+  }
+
+  // Svuota il contenitore e crea i blocchetti per ogni pasto salvato
+  listaContenitore.innerHTML = '';
+  storicoPasti.forEach(pasto => {
+    listaContenitore.innerHTML += `
+      <div style="background: #f8f9fa; border-left: 4px solid #3498db; padding: 12px; margin-bottom: 10px; border-radius: 6px; text-align: left;">
+        <span style="font-size: 12px; color: #7f8c8d; font-weight: bold;">🕒 Ore ${pasto.orario}</span>
+        <p style="margin: 5px 0 0 0; font-size: 14px; white-space: pre-line;">${pasto.analisi}</p>
+      </div>
+    `;
+  });
+}
+
+// Forza il caricamento dei pasti ogni volta che l'utente clicca sulla scheda Diario
+const vecchiaFunzioneCambiaSchermata = cambiaSchermata;
+cambiaSchermata = function(nomeSchermata, elementoNav) {
+  vecchiaFunzioneCambiaSchermata(nomeSchermata, elementoNav);
+  if (nomeSchermata === 'Diario') {
+    aggiornaGraficaDiario();
+  }
+};
+
+// Avvia il caricamento anche all'avvio dell'app
+document.addEventListener("DOMContentLoaded", aggiornaGraficaDiario);
+ </script>
 </body>
 </html>
