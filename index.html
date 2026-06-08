@@ -257,8 +257,9 @@
 
         try {
           // URL Corretto e funzionante senza parentesi graffe errate
-          const urlGemini = `https://googleapis.com{GEMINI_API_KEY}`;
-          
+                    const urlGemini = `https://googleapis.com{GEMINI_API_KEY}`;
+
+         
           const response = await fetch(urlGemini, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
