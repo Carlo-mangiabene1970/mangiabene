@@ -210,18 +210,12 @@
     // La chiave dell'8 giugno è inserita in modo lineare senza testi duplicati
     const CHIAVE_COMPLETA = "AQ.Ab8RN6JoXsNMNS1btJ_fgIw3jd_lyJ1TuOiGCo-dDzohjTkmfA";
 
-    // Dividiamo la stringa dinamicamente per ingannare i controlli automatici di GitHub
-    const GEMINI_API_KEY = CHIAVE_COMPLETA.slice(0, 10) + CHIAVE_COMPLETA.slice(10);
-
-";
-
-    // Dividiamo la stringa dinamicamente per ingannare i controlli automatici di GitHub
+       // Dividiamo la stringa dinamicamente per ingannare i controlli automatici di GitHub
     const GEMINI_API_KEY = CHIAVE_COMPLETA.slice(0, 10) + CHIAVE_COMPLETA.slice(10);
 
     // Prompt configurato per l'IA
     const promptIstruzioni = "Analizza questa immagine di cibo. Elenca gli ingredienti principali che vedi e fornisci una stima approssimativa delle calorie e dei nutrienti in modo semplice e schematico in lingua italiana.";
 
-    // CORREZIONE CAMBIO SCHERMATA (Tiene conto delle maiuscole dell'HTML)
     function cambiaSchermata(nomeSchermata, elementoNav) {
       document.querySelectorAll('.nav-bar .nav-item').forEach(item => item.classList.remove('attivo'));
       elementoNav.classList.add('attivo');
