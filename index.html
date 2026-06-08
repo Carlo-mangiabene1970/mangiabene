@@ -259,17 +259,32 @@
             const testoRisposta = data.candidates[0].content.parts[0].text;
             bloccoRisposta.innerHTML = `🤖 <strong>Analisi Gemini:</strong><br>${testoRisposta}`;
             
-            // --- LOGICA DIARIO: SALVATAGGIO AUTOMATICO ---
+                        // --- LOGICA DIARIO: SALVATAGGIO AUTOMATICO ---
             const oraAttuale = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
             
-            // Recupera i vecchi pasti dal telefono o crea una lista vuota se è la prima volta
             let storicoPasti = JSON.parse(localStorage.getItem('mangiabene_diario')) || [];
             
-            // Aggiunge il nuovo pasto in cima alla lista
             storicoPasti.unshift({
               orario: oraAttuale,
               analisi: testoRisposta
             });
+
+            // --- MOTORE DI CALCOLO: AGGIORNA CONTATORI SCHERMO ---
+            // Cerca i numeri legati a kcal, carboidrati e proteine nel testo dell'IA
+            const calTrovate = testoRisposta.match(/(\d+)\s*(?:kcal|calorie)/i);
+            const carbTrovati = testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*di?\s*carboidrati/i) || testoRisposta.match(/carboidrati\s*:?\s*(\d+)/i);
+            const protTrovate = testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*di?\s*proteine/i) || testoRisposta.match(/proteine\s*:?\s*(\d+)/i);
+
+            if (calTrovate) {
+              document.getElementById('cal-tot').innerText = calTrovate[1];
+            }
+            if (carbTrovati) {
+              document.getElementById('carb-tot').innerText = carbTrovati[1] + 'g';
+            }
+            if (protTrovate) {
+              document.getElementById('prot-tot').innerText = protTrovate[1] + 'g';
+            }
+
             
             // Salva la lista aggiornata nella memoria del telefono
             localStorage.setItem('mangiabene_diario', JSON.stringify(storicoPasti));
@@ -322,6 +337,29 @@ cambiaSchermata = function(nomeSchermata, elementoNav) {
 
 // Avvia il caricamento anche all'avvio dell'app
 document.addEventListener("DOMContentLoaded", aggiornaGraficaDiario);
+// Funzione per salvare i dati del profilo nella cassaforte del telefono
+function salvaProfilo() {
+  const citta = document.getElementById('prof-citta').value;
+  const intolleranze = document.getElementById('prof-intolleranze').value;
+
+  const profiloUtente = { citta: citta, intolleranze: intolleranze };
+  localStorage.setItem('mangiabene_profilo', JSON.stringify(profiloUtente));
+  
+  alert('Dati salvati in localStorage! Il profilo IA è pronto.');
+}
+
+// Funzione che ricarica i dati salvati nelle caselle ogni volta che si riapre l'app
+function caricaProfilo() {
+  const datiSalvati = JSON.parse(localStorage.getItem('mangiabene_profilo'));
+  if (datiSalvati) {
+    if (document.getElementById('prof-citta')) document.getElementById('prof-citta').value = datiSalvati.citta || '';
+    if (document.getElementById('prof-intolleranze')) document.getElementById('prof-intolleranze').value = datiSalvati.intolleranze || '';
+  }
+}
+
+// Avvia il caricamento dei dati del profilo all'apertura dell'app
+document.addEventListener("DOMContentLoaded", caricaProfilo);
+
  </script>
-</body>
-</html>
+ </body>
+ </html>
