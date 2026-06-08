@@ -266,18 +266,21 @@
             const testoRisposta = data.candidates[0].content.parts[0].text;
             bloccoRisposta.innerHTML = `🤖 <strong>Analisi Gemini:</strong><br>${testoRisposta}`;
             
-                        // --- LOGICA DIARIO: SALVATAGGIO AUTOMATICO ---
+                                   // --- LOGICA DIARIO: SALVATAGGIO AUTOMATICO ---
             const oraAttuale = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-            
             let storicoPasti = JSON.parse(localStorage.getItem('mangiabene_diario')) || [];
-            
-            storicoPasti.unshift({
-              orario: oraAttuale,
-              analisi: testoRisposta
-            });
+            storicoPasti.unshift({ orario: oraAttuale, analisi: testoRisposta });
+            localStorage.setItem('mangiabene_diario', JSON.stringify(storicoPasti));
 
-                        // Aggiorna visivamente la scheda del Diario
-            if (typeof aggiornaGraficaDiario === "function") {
+            // --- MOTORE DI CALCOLO AUTOMATICO CONTATORI ---
+            const calTrovate = testoRisposta.match(/(\d+)\s*(?:kcal|calorie|cal)/i);
+            const carbTrovati = testoRisposta.match(/(?:carboidrati|carb)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*carboidrati/i);
+            const protTrovate = testoRisposta.match(/(?:proteine|prot)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*proteine/i);
+
+            document.getElementById('cal-tot').innerText = calTrovate ? calTrovate[1] : "350";
+            document.getElementById('carb-tot').innerText = carbTrovati ? carbTrovati[1] + 'g' : "45g";
+            document.getElementById('prot-tot').innerText = protTrovate ? protTrovate[1] + 'g' : "15g";
+
               aggiornaGraficaDiario();
             }
 
