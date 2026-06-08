@@ -139,22 +139,45 @@
 
       <button class="btn" onclick="document.getElementById('input-foto').click()">📸 Fai una Foto al Pasto</button>
       
-      <div id="anteprima-zona"></div>
-      <div id="blocco-risposta" class="risposta-ia" style="display: none;"></div>
-    </div>
+       <div class="nav-bar">
+    <a href="#" class="nav-item attivo" onclick="cambiaSchermata('home', this)">🏠 Home</a>
+    <a href="#" class="nav-item" onclick="cambiaSchermata('diario', this)">📊 Diario</a>
+    <a href="#" class="nav-item" onclick="cambiaSchermata('profilo', this)">👤 Profilo</a>
   </div>
 
-  <div class="nav-bar">
-    <a href="#" class="nav-item attivo">🏠 Home</a>
-    <a href="#" class="nav-item">📊 Diario</a>
-    <a href="#" class="nav-item">👤 Profilo</a>
-  </div>
 
   <script>
     // --- CONFIGURAZIONE CHIAVE API SICURA PER GITHUB ---
     const chiave_parte1 = "AQ.Ab8RN6JoXsNMNS1btJ_fgIw";
     const chiave_parte2 = "3jd_lyJ1TuOiGCo-dDzohjTkmfA";
     const GEMINI_API_KEY = chiave_parte1 + chiave_parte2;
+// Funzione che fa funzionare i tasti Home, Diario e Profilo
+function cambiaSchermata(nomeSchermata, elementoNav) {
+  // Spegne la luce celeste da tutti i tasti
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('attivo'));
+  // Accende la luce celeste sul tasto appena toccato
+  elementoNav.classList.add('attivo');
+  // Mostra solo la scheda scelta e nasconde le altre
+  const sezioni = ['home', 'diario', 'profilo'];
+  sezioni.forEach(sez => {
+    const blocco = document.getElementById(`sezione-${sez}`) || document.getElementById(sez);
+    if (blocco) {
+      blocco.style.display = (sez === nomeSchermata) ? 'block' : 'none';
+    }
+  });
+}
+
+
+  // Mostra solo la scheda scelta e nasconde le altre
+  const sezioni = ['home', 'diario', 'profilo'];
+  sezioni.forEach(sez => {
+    const blocco = document.getElementById(`sezione-${sez}`) || document.getElementById(sez);
+    if (blocco) {
+      blocco.style.display = (sez === nomeSchermata) ? 'block' : 'none';
+    }
+  });
+}
+
 
     const promptIstruzioni = "Analizza questa immagine di cibo. Elenca gli ingredienti principali che vedi e fornisci una stima approssimativa delle calorie e dei nutrienti in modo semplice e schematico in lingua italiana.";
 
