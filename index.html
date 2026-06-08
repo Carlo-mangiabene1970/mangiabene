@@ -281,7 +281,7 @@
             document.getElementById('carb-tot').innerText = carbTrovati ? carbTrovati[1] + 'g' : "45g";
             document.getElementById('prot-tot').innerText = protTrovate ? protTrovate[1] + 'g' : "15g";
 
-            if (typeof aggiornaGraficaDiario === "function") aggiornaGraficaDiario();
+                       if (typeof aggiornaGraficaDiario === "function") aggiornaGraficaDiario();
 
           } else {
             bloccoRisposta.innerHTML = "❌ L'IA ha ricevuto l'immagine ma non è riuscita a scomporre gli ingredienti.";
@@ -294,6 +294,7 @@
       };
       reader.readAsDataURL(file);
     });
+
 
           } else {
             bloccoRisposta.innerHTML = "❌ Errore di lettura dal server dell'IA. Riprova lo scan.";
