@@ -12,7 +12,6 @@
       --testo: #2c3e50;
       --bianco: #ffffff;
     }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--sfondo);
@@ -20,7 +19,6 @@
       margin: 0;
       padding: 0;
     }
-
     .header {
       background-color: var(--colore-primario);
       color: var(--bianco);
@@ -29,14 +27,12 @@
       font-size: 20px;
       font-weight: bold;
     }
-
     .contenitore {
       padding: 20px;
       max-width: 600px;
       margin: 0 auto;
       padding-bottom: 80px;
     }
-
     .scheda {
       background: var(--bianco);
       border-radius: 12px;
@@ -44,7 +40,6 @@
       margin-bottom: 20px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
-
     img, .gallery img, #anteprima-zona img {
       max-width: 90% !important;
       max-height: 250px !important;
@@ -54,7 +49,6 @@
       object-fit: cover !important;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
     }
-
     .btn {
       background-color: var(--colore-primario);
       color: var(--bianco);
@@ -66,7 +60,6 @@
       width: 100%;
       font-weight: bold;
     }
-
     .risposta-ia {
       background-color: #eef7fc;
       border-left: 4px solid var(--colore-primario);
@@ -75,7 +68,6 @@
       margin-top: 15px;
       white-space: pre-line;
     }
-
     .nav-bar {
       position: fixed;
       bottom: 0;
@@ -88,7 +80,6 @@
       box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
       z-index: 1000;
     }
-
     .nav-item {
       color: #7f8c8d;
       text-decoration: none;
@@ -97,22 +88,18 @@
       width: 33%;
       font-weight: 500;
     }
-
     .nav-item.attivo {
       color: var(--colore-primario) !important;
       font-weight: bold !important;
     }
-
     .sezione-app {
       display: none;
     }
-
     .progress-container {
       display: flex;
       justify-content: space-around;
       margin-top: 15px;
     }
-
     .progress-box {
       text-align: center;
       background: #f8f9fa;
@@ -120,7 +107,6 @@
       border-radius: 8px;
       width: 28%;
     }
-
     .progress-val {
       font-size: 18px;
       font-weight: bold;
@@ -132,9 +118,7 @@
   <meta name="theme-color" content="#3498db">
 </head>
 <body>
-
   <div class="header">🥗 Mangiabene App</div>
-
   <div class="contenitore">
     
     <!-- 1. HOME -->
@@ -142,14 +126,11 @@
       <div class="scheda">
         <h3>Scannerizza il tuo Pasto</h3>
         <p>Scatta una foto o carica un piatto per estrarre gli ingredienti e analizzarli con l'IA.</p>
-        
         <input type="file" id="input-foto" accept="image/*" capture="environment" style="display: none;">
         <button class="btn" onclick="document.getElementById('input-foto').click()">📸 Fai una Foto al Pasto</button>
-        
         <div id="anteprima-zona"></div>
         <div id="blocco-risposta" class="risposta-ia" style="display: none;"></div>
       </div>
-
       <div class="scheda">
         <h3>Calorie Odierne</h3>
         <div class="progress-container">
@@ -159,7 +140,6 @@
         </div>
       </div>
     </div>
-
     <!-- 2. DIARIO -->
     <div id="Diario" class="sezione-app">
       <div class="scheda">
@@ -170,7 +150,6 @@
         </div>
       </div>
     </div>
-
     <!-- 3. PROFILO -->
     <div id="Profilo" class="sezione-app">
       <div class="scheda">
@@ -187,15 +166,12 @@
         <button class="btn" onclick="salvaProfilo()">Aggiorna Obiettivi</button>
       </div>
     </div>
-
   </div>
-
   <div class="nav-bar">
     <a href="#" class="nav-item attivo" onclick="cambiaSchermata('Home', this)">🏠 Home</a>
     <a href="#" class="nav-item" onclick="cambiaSchermata('Diario', this)">📊 Diario</a>
     <a href="#" class="nav-item" onclick="cambiaSchermata('Profilo', this)">👤 Profilo</a>
   </div>
-
   <script>
     // --- INTEGRATION GOOGLE GEMINI KEY SECURITY ---
     const pezzo_tre = "dDzohjTkmfA";
@@ -276,9 +252,10 @@
             const carbTrovati = testoRisposta.match(/(?:carboidrati|carb)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*carboidrati/i);
             const protTrovate = testoRisposta.match(/(?:proteine|prot)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*proteine/i);
 
-                       document.getElementById('cal-tot').innerText = calTrovate ? calTrovate[1] : "350";
+            document.getElementById('cal-tot').innerText = calTrovate ? calTrovate[1] : "350";
             document.getElementById('carb-tot').innerText = carbTrovati ? carbTrovati[1] + 'g' : "45g";
             document.getElementById('prot-tot').innerText = protTrovate ? protTrovate[1] + 'g' : "15g";
+
             if (typeof aggiornaGraficaDiario === "function") aggiornaGraficaDiario();
 
           } else {
@@ -293,7 +270,6 @@
       reader.readAsDataURL(file);
     });
 
-    // FUNZIONE AGGIORNAMENTO GRAFICO DIARIO
     function aggiornaGraficaDiario() {
       const listaContenitore = document.getElementById('lista-pasti-salvati');
       if (!listaContenitore) return;
@@ -304,8 +280,7 @@
       }
       listaContenitore.innerHTML = '';
       storicoPasti.forEach(pasto => {
-
-                listaContenitore.innerHTML += `
+        listaContenitore.innerHTML += `
           <div style="background: #f8f9fa; border-left: 4px solid #3498db; padding: 12px; margin-bottom: 10px; border-radius: 6px; text-align: left;">
             <span style="font-size: 12px; color: #7f8c8d; font-weight: bold;">🕒 Ore ${pasto.orario}</span>
             <p style="margin: 5px 0 0 0; font-size: 14px; white-space: pre-line;">${pasto.analisi}</p>
@@ -313,7 +288,6 @@
       });
     }
 
-    // FUNZIONI STRUTTURALI DEL PROFILO LocalStorage
     function salvaProfilo() {
       const citta = document.getElementById('prof-citta').value;
       const intolleranze = document.getElementById('prof-intolleranze').value;
@@ -336,6 +310,3 @@
   </script>
 </body>
 </html>
-
-
-
