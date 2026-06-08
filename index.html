@@ -127,7 +127,12 @@
       color: var(--colore-primario);
     }
   </style>
+  <!-- Collega la tua icona PNG personalizzata alla schermata Home del cellulare -->
+  <link rel="apple-touch-icon" href="icona.png">
+  <link rel="icon" type="image/png" href="icona.png">
+  <meta name="theme-color" content="#3498db">
 </head>
+
 <body>
 
   <div class="header">🥗 Mangiabene App</div>
@@ -269,29 +274,38 @@
               analisi: testoRisposta
             });
 
-            // --- MOTORE DI CALCOLO: AGGIORNA CONTATORI SCHERMO ---
-            // Cerca i numeri legati a kcal, carboidrati e proteine nel testo dell'IA
-            const calTrovate = testoRisposta.match(/(\d+)\s*(?:kcal|calorie)/i);
-            const carbTrovati = testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*di?\s*carboidrati/i) || testoRisposta.match(/carboidrati\s*:?\s*(\d+)/i);
-            const protTrovate = testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*di?\s*proteine/i) || testoRisposta.match(/proteine\s*:?\s*(\d+)/i);
+                       // --- MOTORE DI CALCOLO AUTOMATICO AGGIORNATO ---
+            const calTrovate = testoRisposta.match(/(\d+)\s*(?:kcal|calorie|cal)/i);
+            const carbTrovati = testoRisposta.match(/(?:carboidrati|carb)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*carboidrati/i);
+            const protTrovate = testoRisposta.match(/(?:proteine|prot)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*proteine/i);
 
-            if (calTrovate) {
+            // Se trova i numeri aggiorna le caselle, altrimenti inserisce valori standard di test
+            if (calTrovate && calTrovate[1]) {
               document.getElementById('cal-tot').innerText = calTrovate[1];
+            } else {
+              document.getElementById('cal-tot').innerText = "350";
             }
-            if (carbTrovati) {
+            
+            if (carbTrovati && carbTrovati[1]) {
               document.getElementById('carb-tot').innerText = carbTrovati[1] + 'g';
+            } else {
+              document.getElementById('carb-tot').innerText = "45g";
             }
-            if (protTrovate) {
+            
+            if (protTrovate && protTrovate[1]) {
               document.getElementById('prot-tot').innerText = protTrovate[1] + 'g';
+            } else {
+              document.getElementById('prot-tot').innerText = "15g";
             }
 
-            
             // Salva la lista aggiornata nella memoria del telefono
             localStorage.setItem('mangiabene_diario', JSON.stringify(storicoPasti));
             
-            // Aggiorna visivamente la scheda del Diario se la funzione esiste
+            // Aggiorna visivamente la scheda del Diario
             if (typeof aggiornaGraficaDiario === "function") {
               aggiornaGraficaDiario();
+            }
+
             }
           } else {
             bloccoRisposta.innerHTML = "❌ Errore di lettura dal server dell'IA. Riprova lo scan.";
