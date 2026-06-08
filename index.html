@@ -272,7 +272,7 @@
             storicoPasti.unshift({ orario: oraAttuale, analisi: testoRisposta });
             localStorage.setItem('mangiabene_diario', JSON.stringify(storicoPasti));
 
-            // --- MOTORE DI CALCOLO AUTOMATICO CONTATORI ---
+                      // --- MOTORE DI CALCOLO AUTOMATICO CONTATORI ---
             const calTrovate = testoRisposta.match(/(\d+)\s*(?:kcal|calorie|cal)/i);
             const carbTrovati = testoRisposta.match(/(?:carboidrati|carb)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*carboidrati/i);
             const protTrovate = testoRisposta.match(/(?:proteine|prot)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*proteine/i);
@@ -281,8 +281,19 @@
             document.getElementById('carb-tot').innerText = carbTrovati ? carbTrovati[1] + 'g' : "45g";
             document.getElementById('prot-tot').innerText = protTrovate ? protTrovate[1] + 'g' : "15g";
 
-              aggiornaGraficaDiario();
-            }
+            if (typeof aggiornaGraficaDiario === "function") aggiornaGraficaDiario();
+
+          } else {
+            bloccoRisposta.innerHTML = "❌ L'IA ha ricevuto l'immagine ma non è riuscita a scomporre gli ingredienti.";
+          }
+
+        } catch (error) {
+          console.error(error);
+          bloccoRisposta.innerHTML = "❌ Ops! Il server di Google non risponde. Controlla la connessione.";
+        }
+      };
+      reader.readAsDataURL(file);
+    });
 
           } else {
             bloccoRisposta.innerHTML = "❌ Errore di lettura dal server dell'IA. Riprova lo scan.";
