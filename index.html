@@ -238,7 +238,8 @@
         const datiDellaFoto = partiMime[2];
 
         try {
-          const urlGemini = `https://googleapis.com{GEMINI_API_KEY}`;
+                   const urlGemini = `https://googleapis.com{GEMINI_API_KEY}`;
+
           
           const response = await fetch(urlGemini, {
             method: "POST",
@@ -274,47 +275,24 @@
               analisi: testoRisposta
             });
 
-                       // --- MOTORE DI CALCOLO AUTOMATICO AGGIORNATO ---
-            const calTrovate = testoRisposta.match(/(\d+)\s*(?:kcal|calorie|cal)/i);
-            const carbTrovati = testoRisposta.match(/(?:carboidrati|carb)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*carboidrati/i);
-            const protTrovate = testoRisposta.match(/(?:proteine|prot)\s*:?\s*(\d+)/i) || testoRisposta.match(/(\d+)\s*(?:g|grammi)\s*(?:di)?\s*proteine/i);
-
-            // Se trova i numeri aggiorna le caselle, altrimenti inserisce valori standard di test
-            if (calTrovate && calTrovate[1]) {
-              document.getElementById('cal-tot').innerText = calTrovate[1];
-            } else {
-              document.getElementById('cal-tot').innerText = "350";
-            }
-            
-            if (carbTrovati && carbTrovati[1]) {
-              document.getElementById('carb-tot').innerText = carbTrovati[1] + 'g';
-            } else {
-              document.getElementById('carb-tot').innerText = "45g";
-            }
-            
-            if (protTrovate && protTrovate[1]) {
-              document.getElementById('prot-tot').innerText = protTrovate[1] + 'g';
-            } else {
-              document.getElementById('prot-tot').innerText = "15g";
-            }
-
-            // Salva la lista aggiornata nella memoria del telefono
-            localStorage.setItem('mangiabene_diario', JSON.stringify(storicoPasti));
-            
-            // Aggiorna visivamente la scheda del Diario
+                        // Aggiorna visivamente la scheda del Diario
             if (typeof aggiornaGraficaDiario === "function") {
               aggiornaGraficaDiario();
             }
 
-            }
           } else {
             bloccoRisposta.innerHTML = "❌ Errore di lettura dal server dell'IA. Riprova lo scan.";
           }
 
+        } catch (error) {
+          console.error(error);
+          bloccoRisposta.innerHTML = "❌ Ops! Il server di Google non risponde o la chiave API è bloccata.";ctr
         }
       };
       reader.readAsDataURL(file);
+          
    });
+
  
 // Funzione che legge la memoria del telefono e mostra i pasti nel Diario
 function aggiornaGraficaDiario() {
